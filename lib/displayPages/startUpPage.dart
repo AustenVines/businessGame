@@ -1,8 +1,8 @@
 import 'package:base_application/displayPages/gamePage.dart';
 import 'package:base_application/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 FirestoreService firestoreService = FirestoreService();
 
 class StartupPage extends StatefulWidget {
@@ -32,36 +32,43 @@ class StartupPageState extends State<StartupPage> {
           TextButton(onPressed: () {Navigator.push(context,
           MaterialPageRoute(builder: (context) => const GamePage()));},
           child: const Text("Play")),
-          SizedBox(
 
-            height: 200,
-            width: 200,
-            child: StreamBuilder<QuerySnapshot>(
-                stream: firestoreService.getSavesStream(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData){
-                    List savesList = snapshot.data!.docs;
-                    return ListView.builder(
-                        itemCount: savesList.length,
-                        itemBuilder: (context, index) {
-                          DocumentSnapshot document = savesList[index];
-                          String docID = document.id;
+        ]),Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 200,
+                width: 200,
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: firestoreService.getSavesStream(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData){
+                        List savesList = snapshot.data!.docs;
+                        return ListView.builder(
+                            itemCount: savesList.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot document = savesList[index];
+                              String docID = document.id;
 
-                          Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-                          String saveName = data['history'];
+                              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                              String saveName = data['saveName'];
 
-                          return ListTile(
-                            title: Text(saveName),
-                          );
-                        });
+                              return ListTile(
+                                title: Text(saveName),
+                                subtitle: Text("Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",),
+                              );
+                            });
 
-                  }
-                  else{
-                    return const Text("no saves");
-                  }
-                }),
+                      }
+                      else{
+                        return const Text("no saves");
+                      }
+                    }),
+              )
+
+            ],
           )
-        ]),
 
         ],
       ),
