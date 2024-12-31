@@ -13,7 +13,31 @@ class StartupPage extends StatefulWidget {
 }
 
 class StartupPageState extends State<StartupPage> {
+
+  final TextEditingController textController = TextEditingController();
+
+
+
+  void editSave(String docID){
+    showDialog(context: context,
+    builder: (context) => AlertDialog(
+      content: TextField(
+        controller: textController,
+      ),
+      actions: [
+        ElevatedButton(onPressed: () {
+          firestoreService.updateSave(docID, textController.text);
+
+          textController.clear();
+
+          Navigator.pop(context);}, child: const Text("Save"))
+      ],
+    ));
+    ;
+  }
+
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
@@ -49,7 +73,7 @@ class StartupPageState extends State<StartupPage> {
                             itemCount: savesList.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot document = savesList[index];
-                              // String docID = document.id;
+                              String docID = document.id;
 
                               Map<String, dynamic> data = document.data() as Map<String, dynamic>;
                               String saveName = data['saveName'];
@@ -58,7 +82,7 @@ class StartupPageState extends State<StartupPage> {
                                 title: Text(saveName),
                                 subtitle: Text("Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",),
                                 trailing: IconButton(
-                                onPressed: (){},
+                                onPressed: () => editSave(docID),
                                 icon: const Icon(Icons.settings),
                               ));
                             });
