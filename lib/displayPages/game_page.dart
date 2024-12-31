@@ -67,18 +67,23 @@ class MyFlutterState extends State<GamePage> {
   }
   void loadGame() async{
     FirestoreService firestoreService = FirestoreService();
-    var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
+    if(businessName.save == ""){
 
-    setState(() {
-      money = currentSave['businessMoney'].toString();
-      businessName.money = currentSave['businessMoney'];
-      stock = currentSave['businessStock'].toString();
-      businessName.stock = currentSave['businessStock'];
-      interest = currentSave['businessInterest'].toString();
-      businessName.interest = currentSave['businessInterest'];
-      disasterPercent = currentSave['disasterPercent'].toString();
-      businessName.disasterPercent = currentSave['disasterPercent'];
-    });
+    }else{
+      var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
+
+      setState(() {
+        money = currentSave['businessMoney'].toString();
+        businessName.money = currentSave['businessMoney'];
+        stock = currentSave['businessStock'].toString();
+        businessName.stock = currentSave['businessStock'];
+        interest = currentSave['businessInterest'].toString();
+        businessName.interest = currentSave['businessInterest'];
+        disasterPercent = currentSave['disasterPercent'].toString();
+        businessName.disasterPercent = currentSave['disasterPercent'];
+      });
+
+    }
 
   }
   void buttonHandler(int option) {
