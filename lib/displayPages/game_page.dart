@@ -9,6 +9,7 @@ Business businessName = Business();
 Play active = Play();
 
 
+
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
 
@@ -18,7 +19,10 @@ class GamePage extends StatefulWidget {
   }
 }
 
+
 class MyFlutterState extends State<GamePage> {
+
+
   late Node? currentNode = box.get(0);
   late int iD;
   late int optionA;
@@ -35,7 +39,7 @@ class MyFlutterState extends State<GamePage> {
   String money = businessName.getMoney().toString();
   String interest = businessName.getInterest().toString();
   String stock = businessName.getStock().toString();
-  String distasterPercent = businessName.getDisaster().toString(); // temp
+  String disasterPercent = businessName.getDisaster().toString(); // temp
 
 
   @override
@@ -61,7 +65,18 @@ class MyFlutterState extends State<GamePage> {
       });
     });
   }
+  void loadGame(String? docID){
+    // if the game is saved already then load from revious save else create new business/////////////////////////////
+    FirestoreService firestoreService = FirestoreService();
+    if(docID == null){
+      print("loaded new");
 
+    }
+    else{
+      print("loaded old");
+      print(firestoreService.getSave(docID));
+    }
+  }
   void buttonHandler(int option) {
     setState(() {
       Node? nodeOption;
@@ -101,7 +116,7 @@ class MyFlutterState extends State<GamePage> {
       money = businessName.getMoney().toString();
       interest = businessName.getInterest().toString();
       stock = businessName.getStock().toString();
-      distasterPercent = businessName.disasterPercent.toString();
+      disasterPercent = businessName.disasterPercent.toString();
 
 
       if (nodeOption != null) {
@@ -132,15 +147,25 @@ class MyFlutterState extends State<GamePage> {
       isButton3Visible = !isButton3Visible;
     });
   }
-
-
   void save(){
-    print("saving");
+    TextEditingController textController = TextEditingController();
     FirestoreService firestoreService = FirestoreService();
-    firestoreService.addSave("second save");
-    print("saved");
+    showDialog(context: context,
+        builder: (context) => AlertDialog(
+          content: TextField(
+            controller: textController,
+          ),
+          actions: [
+            ElevatedButton(onPressed: () {
+              firestoreService.addSave(textController.text, businessName.money, businessName.stock, businessName.interest, businessName.disasterPercent);
 
+              textController.clear();
+
+              Navigator.pop(context);}, child: const Text("Save"))
+          ],
+        ));
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +186,7 @@ class MyFlutterState extends State<GamePage> {
                     Text("Money: £$money"),
                     Text("interest percentage: $interest%"),
                     Text("Stock level: $stock"),
-                    Text("disaster percentage: $distasterPercent%"),
+                    Text("disaster percentage: $disasterPercent%"),
                     Text("optionDisplay1"),
                     Text(displayForAnswer1),
                     isButton1Visible ?

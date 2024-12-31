@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:base_application/displayPages/game_page.dart';
 import 'package:base_application/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,10 +15,19 @@ class StartupPage extends StatefulWidget {
 }
 
 class StartupPageState extends State<StartupPage> {
-
   final TextEditingController textController = TextEditingController();
+  String displaySelectedSave = "Previous save (click save you want to load)";
 
+  void grabSave (String docID) async{
+     var start = await firestoreService.getSave(docID)as DocumentSnapshot;
+     setState(() {
+       displaySelectedSave = start['saveName'];
+     });
 
+  }
+  void holdSave(String docID){
+    print("the docID =  $docID");
+  }
 
   void editSave(String docID){
     showDialog(context: context,
@@ -33,11 +44,9 @@ class StartupPageState extends State<StartupPage> {
           Navigator.pop(context);}, child: const Text("Save"))
       ],
     ));
-    ;
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
@@ -55,7 +64,10 @@ class StartupPageState extends State<StartupPage> {
         children: [
           TextButton(onPressed: () {Navigator.push(context,
           MaterialPageRoute(builder: (context) => const GamePage()));},
-          child: const Text("Play")),
+          child: const Text("New Game")),
+
+          TextButton(onPressed: () {}, child:
+          Text("Continue with $displaySelectedSave"))
 
         ]),Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -81,6 +93,7 @@ class StartupPageState extends State<StartupPage> {
                               return ListTile(
                                 title: Text(saveName),
                                 subtitle: Text("Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",),
+                                onTap: () => grabSave(docID),
                                 trailing: IconButton(
                                 onPressed: () => editSave(docID),
                                 icon: const Icon(Icons.settings),

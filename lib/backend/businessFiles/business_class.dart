@@ -5,7 +5,7 @@ class Business{
   double interest = 0;
   double maxInterest = 100;
   double minInterest = 0;
-  double stock = 0;
+  int stock = 0;
   double maxStock = 100;
   double minStock = 0;
   double disasterPercent = 0;
@@ -16,7 +16,7 @@ class Business{
   double getInterest(){
     return interest;
   }
-  double getStock(){
+  int getStock(){
     return stock;
   }
   double getDisaster(){
