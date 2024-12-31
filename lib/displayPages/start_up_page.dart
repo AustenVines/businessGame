@@ -17,59 +17,70 @@ class StartupPageState extends State<StartupPage> {
   String displaySelectedSave = "Previous save (click save you want to load)";
   String selectedDocID = "";
 
-  void grabSave (String docID) async{
-     var start = await firestoreService.getSave(docID)as DocumentSnapshot;
-     setState(() {
-       displaySelectedSave = start['saveName'];
-     });
-
+  void grabSave(String docID) async {
+    var start = await firestoreService.getSave(docID) as DocumentSnapshot;
+    setState(() {
+      displaySelectedSave = start['saveName'];
+    });
   }
-  void holdSave(String docID){
+
+  void holdSave(String docID) {
     businessName.save = docID;
     print(businessName.save);
   }
 
-  void editSave(String docID){
+  void editSave(String docID) {
     showDialog(context: context,
-    builder: (context) => AlertDialog(
-      content: TextField(
-        controller: textController,
-      ),
-      actions: [
-        ElevatedButton(onPressed: () {
-          firestoreService.updateSave(docID, textController.text);
+        builder: (context) =>
+            AlertDialog(
+              content: TextField(
+                controller: textController,
+              ),
+              actions: [
+                ElevatedButton(onPressed: () {
+                  firestoreService.updateSave(docID, textController.text);
 
-          textController.clear();
+                  textController.clear();
 
-          Navigator.pop(context);}, child: const Text("Save"))
-      ],
-    ));
+                  Navigator.pop(context);
+                }, child: const Text("Save"))
+              ],
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
-      body:
-          Column(
+      body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: [const Row(
+        children: [
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Text("Zero to Millions")]),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextButton(onPressed: () {Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const GamePage()));},
-          child: const Text("New Game")),
-
-          TextButton(onPressed: () {}, child:
-          Text("Continue with $displaySelectedSave"))
-
-        ]),Row(
+            children: [Text("Zero to Millions")],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const GamePage()),
+                  );
+                },
+                child: const Text("New Game"),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text("Continue with $displaySelectedSave"),
+              ),
+            ],
+          ),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -77,41 +88,67 @@ class StartupPageState extends State<StartupPage> {
                 height: 200,
                 width: 200,
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: firestoreService.getSavesStream(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData){
-                        List savesList = snapshot.data!.docs;
-                        return ListView.builder(
-                            itemCount: savesList.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot document = savesList[index];
-                              String docID = document.id;
+                  stream: firestoreService.getSavesStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Error loading saves"),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      List<DocumentSnapshot> savesList = snapshot.data!.docs;
 
-                              Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-                              String saveName = data['saveName'];
-
-                              return ListTile(
-                                title: Text(saveName),
-                                subtitle: Text("Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",),
-                                onTap: () {
-                                  grabSave(docID);
-                                  holdSave(docID);},
-                                trailing: IconButton(
-                                onPressed: () => editSave(docID),
-                                icon: const Icon(Icons.settings),
-                              ));
-                            });
-
+                      // Check if the list is empty
+                      if (savesList.isEmpty) {
+                        return const Center(
+                          child: Text("No saves"),
+                        );
                       }
-                      else{
-                        return const Text("no saves");
-                      }
-                    }),
-              )
 
+                      // Display the list of saves
+                      return ListView.builder(
+                        itemCount: savesList.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot document = savesList[index];
+                          String docID = document.id;
+
+                          Map<String, dynamic> data =
+                          document.data() as Map<String, dynamic>;
+                          String saveName = data['saveName'];
+
+                          return ListTile(
+                            title: Text(saveName),
+                            subtitle: Text(
+                              "Saved on: ${DateFormat('yyyy-MM-dd HH:mm')
+                                  .format(
+                                  (data['timestamp'] as Timestamp).toDate())}",
+                            ),
+                            onTap: () {
+                              grabSave(docID);
+                              holdSave(docID);
+                            },
+                            trailing: IconButton(
+                              onPressed: () => editSave(docID),
+                              icon: const Icon(Icons.settings),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("No saves"),
+                      );
+                    }
+                  },
+                ),
+              ),
             ],
-          )
-
+          ),
         ],
       ),
     );

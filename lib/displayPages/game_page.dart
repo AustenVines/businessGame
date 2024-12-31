@@ -118,6 +118,7 @@ class MyFlutterState extends State<GamePage> {
       disasterPercent = businessName.disasterPercent.toString();
 
       if (nodeOption != null) {
+        businessName.currentNode = nodeOption.iD;
         iD = nodeOption.iD;
         optionA = nodeOption.optionA;
         optionB = nodeOption.optionB;
@@ -156,7 +157,9 @@ class MyFlutterState extends State<GamePage> {
           ),
           actions: [
             ElevatedButton(onPressed: () {
-              firestoreService.addSave(textController.text, businessName.money, businessName.currentNode, businessName.stock, businessName.interest, businessName.disasterPercent);
+              print("current node = ${businessName.currentNode}");
+
+              firestoreService.addSave(textController.text, businessName.currentNode, businessName.money, businessName.stock, businessName.interest, businessName.disasterPercent);
 
               textController.clear();
 
