@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "236461047978",
+    "project_id": "businessgame-2124146",
+    "storage_bucket": "businessgame-2124146.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236461047978:android:3b7a084ceab05b42b010d3",
+        "android_client_info": {
+          "package_name": "com.example.base_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBh1TukwlZrf2vhx_kEa41hXJBzZnSJiEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

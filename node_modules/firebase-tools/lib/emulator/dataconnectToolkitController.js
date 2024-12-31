@@ -1,0 +1,44 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DataConnectToolkitController = void 0;
+const error_1 = require("../error");
+const portUtils = require("./portUtils");
+const utils_1 = require("../utils");
+const dataconnectEmulator_1 = require("./dataconnectEmulator");
+const name = "Data Connect Toolkit";
+class DataConnectToolkitController {
+    static async start(args) {
+        if (this.isRunning || this.instance) {
+            throw new error_1.FirebaseError(`${name} is already running!`, {});
+        }
+        this.instance = new dataconnectEmulator_1.DataConnectEmulator(args);
+        this.isRunning = true;
+        await this.instance.start();
+        const info = this.instance.getInfo();
+        await portUtils.waitForPortUsed(info.port, (0, utils_1.connectableHostname)(info.host), info.timeout);
+    }
+    static async stop() {
+        if (!this.isRunning) {
+            return;
+        }
+        try {
+            await this.instance.stop();
+            this.isRunning = false;
+        }
+        catch (e) {
+            throw new error_1.FirebaseError(`Data Connect Toolkit failed to stop with error: ${e}`);
+        }
+    }
+    static getInfo() {
+        return this.instance.getInfo();
+    }
+    static getUrl() {
+        const info = this.instance.getInfo();
+        if (info.host.includes(":")) {
+            return `http://[${info.host}]:${info.port}`;
+        }
+        return `http://${info.host}:${info.port}`;
+    }
+}
+exports.DataConnectToolkitController = DataConnectToolkitController;
+DataConnectToolkitController.isRunning = false;
