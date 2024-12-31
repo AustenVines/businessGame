@@ -3,7 +3,7 @@ import '../backend/businessFiles/business_class.dart';
 import '../backend/businessFiles/business_interactions.dart';
 import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
-import 'package:base_application/services/firestore.dart';
+import 'package:businessGameApp/services/firestore.dart';
 
 Business businessName = Business();
 Play active = Play();

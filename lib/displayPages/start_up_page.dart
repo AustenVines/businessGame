@@ -1,7 +1,5 @@
-import 'dart:convert';
-
-import 'package:base_application/displayPages/game_page.dart';
-import 'package:base_application/services/firestore.dart';
+import 'package:businessGameApp/displayPages/game_page.dart';
+import 'package:businessGameApp/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
