@@ -49,6 +49,7 @@ class MyFlutterState extends State<GamePage> {
       setState(() {
         Node? current = box.get(0);
         if (current != null) {
+          businessName.currentNode = current.iD;
           iD = current.iD;
           optionA = current.optionA;
           optionB = current.optionB;
@@ -155,7 +156,7 @@ class MyFlutterState extends State<GamePage> {
           ),
           actions: [
             ElevatedButton(onPressed: () {
-              firestoreService.addSave(textController.text, businessName.money, businessName.stock, businessName.interest, businessName.disasterPercent);
+              firestoreService.addSave(textController.text, businessName.money, businessName.currentNode, businessName.stock, businessName.interest, businessName.disasterPercent);
 
               textController.clear();
 

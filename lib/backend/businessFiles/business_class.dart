@@ -1,11 +1,7 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../../displayPages/game_page.dart';
-import '../../services/firestore.dart';
-
 class Business{
   String save = "";
+  int currentNode = 0;
   int money = 50000; // as a starting point
   double interest = 0;
   double maxInterest = 100;

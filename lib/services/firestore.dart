@@ -4,10 +4,11 @@ class FirestoreService{
 
   static final ref  = FirebaseFirestore.instance.collection('gameSaves');
   //create save onto database
-  Future<void> addSave(String name, int money, int stock, double interest, double disasterPercent){
+  Future<void> addSave(String name, int node, int money, int stock, double interest, double disasterPercent){
     return ref.add({
       'saveName': name,
       'timestamp': Timestamp.now(),
+      'current node': node,
       'businessMoney': money,
       'businessStock': stock,
       'businessInterest': interest,
