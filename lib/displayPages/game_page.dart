@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/businessFiles/business_interactions.dart';
@@ -6,9 +7,8 @@ import '../backend/nodeFiles/node.dart';
 import 'package:businessGameApp/services/firestore.dart';
 
 Business businessName = Business();
+
 Play active = Play();
-
-
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -36,16 +36,15 @@ class MyFlutterState extends State<GamePage> {
   late int? costOfOptionA = currentNode?.costOfOptionA;
   late int? costOfOptionB = currentNode?.costOfOptionB;
   late int? costOfOptionC = currentNode?.costOfOptionC;
-  String money = businessName.getMoney().toString();
+  String money = 0.toString();
   String interest = businessName.getInterest().toString();
   String stock = businessName.getStock().toString();
   String disasterPercent = businessName.getDisaster().toString(); // temp
 
-
   @override
   void initState() {
+    loadGame();
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         Node? current = box.get(0);
@@ -65,19 +64,25 @@ class MyFlutterState extends State<GamePage> {
       });
     });
   }
-  void loadGame(String? docID){
-    // if the game is saved already then load from revious save else create new business/////////////////////////////
+  void loadGame() async{
     FirestoreService firestoreService = FirestoreService();
-    if(docID == null){
-      print("loaded new");
+    var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
 
-    }
-    else{
-      print("loaded old");
-      print(firestoreService.getSave(docID));
-    }
+    setState(() {
+      money = currentSave['businessMoney'].toString();
+      businessName.money = currentSave['businessMoney'];
+      stock = currentSave['businessStock'].toString();
+      businessName.stock = currentSave['businessStock'];
+      interest = currentSave['businessInterest'].toString();
+      businessName.interest = currentSave['businessInterest'];
+      disasterPercent = currentSave['disasterPercent'].toString();
+      businessName.disasterPercent = currentSave['disasterPercent'];
+    });
+
   }
   void buttonHandler(int option) {
+    print("money after stuff :${businessName.money}");
+
     setState(() {
       Node? nodeOption;
       int? amountOfMoney = 0;
@@ -86,23 +91,17 @@ class MyFlutterState extends State<GamePage> {
       int? amountOfDisaster = 0;
       if (option == 1) {
         nodeOption = box.get(optionA);
-        amountOfMoney = box
-            .get(0)
-            ?.costOfOptionA;
+        amountOfMoney = box.get(0)?.costOfOptionA;
         amountOfStock = 30;
         amountOfInterest = 30;
       } else if (option == 2) {
         nodeOption = box.get(optionB);
-        amountOfMoney = box
-            .get(0)
-            ?.costOfOptionB;
+        amountOfMoney = box.get(0)?.costOfOptionB;
         amountOfStock = 20;
         amountOfInterest = 20;
       } else {
         nodeOption = box.get(optionC);
-        amountOfMoney = box
-            .get(0)
-            ?.costOfOptionC;
+        amountOfMoney = box.get(0)?.costOfOptionC;
         amountOfStock = 10;
         amountOfInterest = 10;
       }
@@ -111,13 +110,11 @@ class MyFlutterState extends State<GamePage> {
       active.editStock(businessName, amountOfStock);
       active.editDisasterPercent(businessName, amountOfDisaster);
 
-
       active.saleMaker(businessName);
       money = businessName.getMoney().toString();
       interest = businessName.getInterest().toString();
       stock = businessName.getStock().toString();
       disasterPercent = businessName.disasterPercent.toString();
-
 
       if (nodeOption != null) {
         iD = nodeOption.iD;
@@ -133,6 +130,7 @@ class MyFlutterState extends State<GamePage> {
         costOfOptionC = nodeOption.costOfOptionC;
       }
     });
+
   }
 
   bool isButton1Visible = true;

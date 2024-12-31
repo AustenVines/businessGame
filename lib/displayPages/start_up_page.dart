@@ -15,6 +15,7 @@ class StartupPage extends StatefulWidget {
 class StartupPageState extends State<StartupPage> {
   final TextEditingController textController = TextEditingController();
   String displaySelectedSave = "Previous save (click save you want to load)";
+  String selectedDocID = "";
 
   void grabSave (String docID) async{
      var start = await firestoreService.getSave(docID)as DocumentSnapshot;
@@ -24,7 +25,8 @@ class StartupPageState extends State<StartupPage> {
 
   }
   void holdSave(String docID){
-    print("the docID =  $docID");
+    businessName.save = docID;
+    print(businessName.save);
   }
 
   void editSave(String docID){
@@ -91,7 +93,9 @@ class StartupPageState extends State<StartupPage> {
                               return ListTile(
                                 title: Text(saveName),
                                 subtitle: Text("Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",),
-                                onTap: () => grabSave(docID),
+                                onTap: () {
+                                  grabSave(docID);
+                                  holdSave(docID);},
                                 trailing: IconButton(
                                 onPressed: () => editSave(docID),
                                 icon: const Icon(Icons.settings),

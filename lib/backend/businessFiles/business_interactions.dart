@@ -25,7 +25,7 @@ class Play{
     int saleAmount = saleSize.nextInt(30000);
     int chanceOfSale = saleSize.nextInt(100);
     if(chanceOfSale <= business.interest && business.stock > 0){
-      print("sale");
+      print(saleAmount);
       business.editMoney(saleAmount);
     }
     else{

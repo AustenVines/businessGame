@@ -1,7 +1,12 @@
 
-class Business{
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  int money = 100000; // as a starting point
+import '../../displayPages/game_page.dart';
+import '../../services/firestore.dart';
+
+class Business{
+  String save = "";
+  int money = 50000; // as a starting point
   double interest = 0;
   double maxInterest = 100;
   double minInterest = 0;
@@ -22,7 +27,10 @@ class Business{
   double getDisaster(){
     return disasterPercent;
   }
-
+  void setMoney(int amount){
+    money = amount;
+    print("setMoney");
+  }
   void editMoney(int amount){
     if(amount != 0){
       money += amount;
