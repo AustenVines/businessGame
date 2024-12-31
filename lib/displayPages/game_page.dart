@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../backend/businessFiles/businessClass.dart';
-import '../backend/businessFiles/businessInteractions.dart';
-import '../backend/cvsRipper.dart';
+import '../backend/businessFiles/business_class.dart';
+import '../backend/businessFiles/business_interactions.dart';
+import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
 import 'package:base_application/services/firestore.dart';
 

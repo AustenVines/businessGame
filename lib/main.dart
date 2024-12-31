@@ -1,5 +1,5 @@
-import 'package:base_application/backend/cvsRipper.dart';
-import 'package:base_application/displayPages/startUpPage.dart';
+import 'package:base_application/backend/csv_ripper.dart';
+import 'package:base_application/displayPages/start_up_page.dart';
 import 'package:base_application/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

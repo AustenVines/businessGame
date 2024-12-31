@@ -1,4 +1,4 @@
-import 'package:base_application/displayPages/gamePage.dart';
+import 'package:base_application/displayPages/game_page.dart';
 import 'package:base_application/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +49,7 @@ class StartupPageState extends State<StartupPage> {
                             itemCount: savesList.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot document = savesList[index];
-                              String docID = document.id;
+                              // String docID = document.id;
 
                               Map<String, dynamic> data = document.data() as Map<String, dynamic>;
                               String saveName = data['saveName'];
@@ -57,7 +57,10 @@ class StartupPageState extends State<StartupPage> {
                               return ListTile(
                                 title: Text(saveName),
                                 subtitle: Text("Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",),
-                              );
+                                trailing: IconButton(
+                                onPressed: (){},
+                                icon: const Icon(Icons.settings),
+                              ));
                             });
 
                       }
