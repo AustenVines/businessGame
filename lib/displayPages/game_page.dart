@@ -35,15 +35,19 @@ class GamePageState extends State<GamePage> {
   String interest = "";
   String stock = "";
   String disasterPercent = "";
+  void doLoad() async{
+    await loadedGame.load(playersBusiness, selectedSave);
 
-  @override
-
-  void initState()  {
-    super.initState();
     setState(()  {
-      loadedGame.load(playersBusiness, selectedSave);
       money = loadedGame.getMoney(playersBusiness).toString();
     });
+  }
+  @override
+
+  void initState() {
+    super.initState();
+
+    doLoad();
     WidgetsBinding.instance.addPostFrameCallback((_) {
 
       setState(() {
