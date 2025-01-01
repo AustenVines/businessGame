@@ -3,6 +3,8 @@ import 'dart:math';
 
 class Play{
 
+
+
   editMoney(Business business, int amount){
     business.editMoney(amount);
   }

@@ -1,7 +1,5 @@
 
-import 'package:businessGameApp/displayPages/game_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../services/firestore.dart';
 
 class Business{

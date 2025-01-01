@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/businessFiles/business_interactions.dart';
@@ -66,27 +67,26 @@ class MyFlutterState extends State<GamePage> {
       });
     });
   }
-  // void loadGame() async{
-  //
-  //   if(businessName.save == ""){
-  //   }else{
-  //     var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
-  //     setState(() {
-  //       money = currentSave['businessMoney'].toString();
-  //       businessName.money = currentSave['businessMoney'];
-  //       stock = currentSave['businessStock'].toString();
-  //       businessName.stock = currentSave['businessStock'];
-  //       interest = currentSave['businessInterest'].toString();
-  //       businessName.interest = currentSave['businessInterest'];
-  //       disasterPercent = currentSave['disasterPercent'].toString();
-  //       businessName.disasterPercent = currentSave['disasterPercent'];
-  //       businessName.currentNode = currentSave['currentNode'];
-  //       businessName.setCurrentNode(currentSave['currentNode']);
-  //     });
-  //
-  //   }
-  //
-  // }
+  void loadGame() async{
+
+    if(businessName.save == ""){
+    }else{
+      var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
+      setState(() {
+        money = currentSave['businessMoney'].toString();
+        active.editMoney(businessName, currentSave['businessMoney']);
+        stock = currentSave['businessStock'].toString();
+        businessName.stock = currentSave['businessStock'];
+        interest = currentSave['businessInterest'].toString();
+        businessName.interest = currentSave['businessInterest'];
+        disasterPercent = currentSave['disasterPercent'].toString();
+        businessName.disasterPercent = currentSave['disasterPercent'];
+        businessName.currentNode = currentSave['currentNode'];
+      });
+
+    }
+
+  }
   void printValues(){
     print("money = ${businessName.money}");
     print("node = ${businessName.currentNode}");
