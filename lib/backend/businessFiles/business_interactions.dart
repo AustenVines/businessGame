@@ -6,18 +6,23 @@ import '../../services/firestore.dart';
 class Play{
 
   void load(BusinessGame business, String docID) async{
-    FirestoreService firestoreService = FirestoreService();
-    var save = await firestoreService.getSave(docID);
-    int money = save['businessMoney'];
-    int stock = save['businessStock'];
-    double interest = save['businessInterest'];
-    double disaster = save['disasterPercent'];
-    int currentNode = save['currentNode'];
-    business.setMoney(money);
-    business.setStock(stock);
-    business.setInterest(interest);
-    business.setDisaster(disaster);
-    business.setNode(currentNode);
+    if (docID == ""){
+      business.setMoney(50000);
+    }else{
+      FirestoreService firestoreService = FirestoreService();
+      var save = await firestoreService.getSave(docID);
+      int money = save['businessMoney'];
+      int stock = save['businessStock'];
+      double interest = save['businessInterest'];
+      double disaster = save['disasterPercent'];
+      int currentNode = save['currentNode'];
+      business.setMoney(money);
+      business.setStock(stock);
+      business.setInterest(interest);
+      business.setDisaster(disaster);
+      business.setNode(currentNode);
+    }
+
   }
 
   int getMoney(BusinessGame business){
