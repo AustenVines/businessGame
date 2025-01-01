@@ -28,21 +28,30 @@ class GamePageState extends State<GamePage> {
   String displayForAnswer1 = "";
   String displayForAnswer2 = "";
   String displayForAnswer3 = "";
-  int costOfOption = 0;
   late int? costOfOptionA = currentNode?.costOfOptionA;
   late int? costOfOptionB = currentNode?.costOfOptionB;
   late int? costOfOptionC = currentNode?.costOfOptionC;
-  String money = loadedGame.getMoney(playersBusiness).toString();
-  String interest = loadedGame.getInterest(playersBusiness).toString();
-  String stock = loadedGame.getStock(playersBusiness).toString();
-  String disasterPercent = loadedGame.getDisaster(playersBusiness).toString(); // temp
+  String money = "";
+  String interest = "";
+  String stock = "";
+  String disasterPercent = "";
 
   @override
+
   void initState()  {
     super.initState();
-    loadedGame.load(playersBusiness, selectedSave);
+    setState(()  {
+      loadedGame.load(playersBusiness, selectedSave);
+      money = loadedGame.getMoney(playersBusiness).toString();
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
+
       setState(() {
+        loadedGame.load(playersBusiness, selectedSave);
+        interest = loadedGame.getInterest(playersBusiness).toString();
+        stock = loadedGame.getStock(playersBusiness).toString();
+        disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
+
         Node? current = box.get(0);
         if(current != null) {
           iD = current.iD;
@@ -56,11 +65,11 @@ class GamePageState extends State<GamePage> {
           costOfOptionA = current.costOfOptionA;
           costOfOptionB = current.costOfOptionB;
           costOfOptionC = current.costOfOptionC;
-
         }
       });
     });
   }
+
   void buttonHandler(int option) {
     setState(() {
       Node? nodeOption;
@@ -88,15 +97,12 @@ class GamePageState extends State<GamePage> {
       loadedGame.editInterest(playersBusiness, amountOfInterest);
       loadedGame.editStock(playersBusiness, amountOfStock);
       loadedGame.editDisaster(playersBusiness, amountOfDistaster);
-
+      money = loadedGame.getMoney(playersBusiness).toString();
+      interest = loadedGame.getInterest(playersBusiness).toString();
+      stock = loadedGame.getStock(playersBusiness).toString();
+      disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
 
       loadedGame.saleMaker(playersBusiness);
-      money = loadedGame.getMoney(playersBusiness).toString();
-      interest = playersBusiness.getInterest().toString();
-      stock = playersBusiness.getStock().toString();
-      disasterPercent = playersBusiness.disasterPercent.toString();
-
-
       if (nodeOption != null) {
         iD = nodeOption.iD;
         optionA = nodeOption.optionA;

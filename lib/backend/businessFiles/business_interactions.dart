@@ -5,7 +5,7 @@ import '../../services/firestore.dart';
 
 class Play{
 
-  void load(BusinessGame business, String docID) async{
+  Future<void> load(BusinessGame business, String docID) async{
     if (docID == ""){
       business.setMoney(50000);
     }else{
