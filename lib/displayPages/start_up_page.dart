@@ -19,14 +19,25 @@ class StartupPageState extends State<StartupPage> {
   String displaySelectedSave = "Previous save (click save you want to load)";
 
   void grabSave(String docID) async {
-    var start = await firestoreService.getSave(docID) as DocumentSnapshot;
+    var save = await firestoreService.getSave(docID) as DocumentSnapshot;
     setState(() {
-      displaySelectedSave = start['saveName'];
+      if (displaySelectedSave == save['saveName']){
+        displaySelectedSave = "Previous save (click save you want to load)";
+      }else{
+        displaySelectedSave = save['saveName'];
+      }
+
     });
   }
 
   void holdSave(String docID) {
-    selectedSave = docID;
+    if (selectedSave == docID){
+      selectedSave = "";
+    }else{
+      selectedSave = docID;
+    }
+
+
   }
 
   void editSave(String docID) {
@@ -67,6 +78,7 @@ class StartupPageState extends State<StartupPage> {
             children: [
               TextButton(
                 onPressed: () {
+                  selectedSave = "";
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const GamePage()),
@@ -75,7 +87,10 @@ class StartupPageState extends State<StartupPage> {
                 child: const Text("New Game"),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const GamePage()));
+                },
                 child: Text("Continue with $displaySelectedSave"),
               ),
             ],
