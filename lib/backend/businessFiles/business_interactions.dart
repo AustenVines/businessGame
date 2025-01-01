@@ -12,8 +12,15 @@ class Play{
     FirestoreService firestoreService = FirestoreService();
     var save = await firestoreService.getSave(docID);
     int money = save['businessMoney'];
-    print(money);
+    int stock = save['businessStock'];
+    double interest = save['businessInterest'];
+    double disaster = save['disasterPercent'];
+    int currentNode = save['currentNode'];
     business.setMoney(money);
+    business.setStock(stock);
+    business.setInterest(interest);
+    business.setDisaster(disaster);
+    business.setNode(currentNode);
   }
 
   int getMoney(BusinessGame business){
@@ -43,7 +50,7 @@ class Play{
     business.increaseMoney(amount);
   }
   void editInterest(BusinessGame business, double amount){
-    // business.editInterest(amount);
+    business.editInterest(amount);
   }
   void editStock(BusinessGame business, int amount){
     business.editStock(amount);

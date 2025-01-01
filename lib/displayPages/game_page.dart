@@ -75,18 +75,18 @@ class GamePageState extends State<GamePage> {
       if (option == 1) {
         nodeOption = box.get(optionA);
         amountOfMoney = box.get(0)?.costOfOptionA;
-        amountOfStock = 30;
-        amountOfInterest = 30;
+        amountOfStock = 3;
+        amountOfInterest = 3;
       } else if (option == 2) {
         nodeOption = box.get(optionB);
         amountOfMoney = box.get(0)?.costOfOptionB;
-        amountOfStock = 20;
-        amountOfInterest = 20;
+        amountOfStock = 2;
+        amountOfInterest = 2;
       } else {
         nodeOption = box.get(optionC);
         amountOfMoney = box.get(0)?.costOfOptionC;
-        amountOfStock = 10;
-        amountOfInterest = 10;
+        amountOfStock = 1;
+        amountOfInterest = 1;
       }
       loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
       loadedGame.editInterest(playersBusiness, amountOfInterest);

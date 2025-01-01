@@ -26,6 +26,24 @@ class BusinessGame {
       money = amount;
     }
   }
+  void setStock(int amount) {
+    if (amount != 0) {
+      stock = amount;
+    }
+  }
+  void setInterest(double amount) {
+    if (amount != 0) {
+      interest = amount;
+    }
+  }
+  void setDisaster(double amount) {
+    if (amount != 0) {
+      disasterPercent = amount;
+    }
+  }
+  void setNode(int node){
+    currentNode = node;
+  }
 
   // Edit interest with validation
   void editInterest(double amount) {
