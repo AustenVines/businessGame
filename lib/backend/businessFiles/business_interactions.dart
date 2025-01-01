@@ -1,9 +1,6 @@
 
 import 'dart:math';
-
 import 'package:businessGameApp/backend/businessFiles/business_class.dart';
-import 'package:businessGameApp/displayPages/game_page.dart';
-
 import '../../services/firestore.dart';
 
 class Play{
@@ -66,7 +63,7 @@ class Play{
     int saleAmount = saleSize.nextInt(30000);
     int chanceOfSale = saleSize.nextInt(100);
     if(chanceOfSale <= business.interest && business.stock > 0){
-      saleAmount;
+      business.increaseMoney(saleAmount);
     }
     else{
 

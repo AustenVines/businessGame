@@ -1,16 +1,13 @@
 
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:businessGameApp/displayPages/start_up_page.dart';
 import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
-import 'package:businessGameApp/services/firestore.dart';
 
 BusinessGame playersBusiness = BusinessGame(0, 0, 0, 0, 0);
 Play loadedGame = Play();
-
-
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -38,13 +35,12 @@ class GamePageState extends State<GamePage> {
   String money = loadedGame.getMoney(playersBusiness).toString();
   String interest = loadedGame.getInterest(playersBusiness).toString();
   String stock = loadedGame.getStock(playersBusiness).toString();
-  String distasterPercent = loadedGame.getDisaster(playersBusiness).toString(); // temp
-
+  String disasterPercent = loadedGame.getDisaster(playersBusiness).toString(); // temp
 
   @override
   void initState()  {
     super.initState();
-    loadedGame.load(playersBusiness, "4nHeryxkFxmVECzDef9L");
+    loadedGame.load(playersBusiness, selectedSave);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         Node? current = box.get(0);
@@ -94,11 +90,11 @@ class GamePageState extends State<GamePage> {
       loadedGame.editDisaster(playersBusiness, amountOfDistaster);
 
 
-      // loadedGame.saleMaker(playersBusiness);
+      loadedGame.saleMaker(playersBusiness);
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = playersBusiness.getInterest().toString();
       stock = playersBusiness.getStock().toString();
-      distasterPercent = playersBusiness.disasterPercent.toString();
+      disasterPercent = playersBusiness.disasterPercent.toString();
 
 
       if (nodeOption != null) {
@@ -151,7 +147,7 @@ class GamePageState extends State<GamePage> {
                     Text("Money: £$money"),
                     Text("interest percentage: $interest%"),
                     Text("Stock level: $stock"),
-                    Text("disaster percentage: $distasterPercent%"),
+                    Text("disaster percentage: $disasterPercent%"),
                     Text("optionDisplay1"),
                     Text(displayForAnswer1),
                     isButton1Visible ?

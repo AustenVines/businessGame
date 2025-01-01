@@ -3,6 +3,8 @@ import 'package:businessGameApp/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+String selectedSave = "";
 FirestoreService firestoreService = FirestoreService();
 
 class StartupPage extends StatefulWidget {
@@ -15,19 +17,17 @@ class StartupPage extends StatefulWidget {
 class StartupPageState extends State<StartupPage> {
   final TextEditingController textController = TextEditingController();
   String displaySelectedSave = "Previous save (click save you want to load)";
-  String selectedDocID = "";
 
   void grabSave(String docID) async {
     var start = await firestoreService.getSave(docID) as DocumentSnapshot;
     setState(() {
-      print(displaySelectedSave);
       displaySelectedSave = start['saveName'];
     });
   }
 
-  // void holdSave(String docID) {
-  //   currentBusiness.save = docID;
-  // }
+  void holdSave(String docID) {
+    selectedSave = docID;
+  }
 
   void editSave(String docID) {
     showDialog(context: context,
@@ -130,7 +130,7 @@ class StartupPageState extends State<StartupPage> {
                             ),
                             onTap: () {
                               grabSave(docID);
-                              // holdSave(docID);
+                              holdSave(docID);
                             },
                             trailing: IconButton(
                               onPressed: () => editSave(docID),
