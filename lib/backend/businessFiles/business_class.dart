@@ -1,4 +1,9 @@
 
+import 'package:businessGameApp/displayPages/game_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../services/firestore.dart';
+
 class Business{
   String save = "";
   int currentNode = 0;
@@ -11,6 +16,20 @@ class Business{
   double minStock = 0;
   double disasterPercent = 0;
 
+  FirestoreService firestoreService = FirestoreService();
+
+  void loadSave(String docID) async{
+
+    var save = await firestoreService.getSave(docID) as DocumentSnapshot;
+    print(save['businessMoney']);
+    if(save['saveName'] == ""){
+      print("nothing to load");
+    }else{
+      money = save['businessMoney'];
+      currentNode = save['currentNode'];
+    }
+  }
+
   int getMoney(){
     return money;
   }
@@ -22,10 +41,6 @@ class Business{
   }
   double getDisaster(){
     return disasterPercent;
-  }
-  void setMoney(int amount){
-    money = amount;
-    print("setMoney");
   }
   void editMoney(int amount){
     if(amount != 0){

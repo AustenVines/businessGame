@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/businessFiles/business_interactions.dart';
@@ -7,7 +7,7 @@ import '../backend/nodeFiles/node.dart';
 import 'package:businessGameApp/services/firestore.dart';
 
 Business businessName = Business();
-
+FirestoreService firestoreService = FirestoreService();
 Play active = Play();
 
 class GamePage extends StatefulWidget {
@@ -40,14 +40,15 @@ class MyFlutterState extends State<GamePage> {
   String interest = businessName.getInterest().toString();
   String stock = businessName.getStock().toString();
   String disasterPercent = businessName.getDisaster().toString(); // temp
-
   @override
-  void initState() {
-    loadGame();
+  void initState(){
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      printValues();
+      businessName.loadSave(businessName.save);
+      printValues();
       setState(() {
-        Node? current = box.get(0);
+        Node? current = box.get(businessName.currentNode);
         if (current != null) {
           businessName.currentNode = current.iD;
           iD = current.iD;
@@ -65,30 +66,36 @@ class MyFlutterState extends State<GamePage> {
       });
     });
   }
-  void loadGame() async{
-    FirestoreService firestoreService = FirestoreService();
-    if(businessName.save == ""){
+  // void loadGame() async{
+  //
+  //   if(businessName.save == ""){
+  //   }else{
+  //     var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
+  //     setState(() {
+  //       money = currentSave['businessMoney'].toString();
+  //       businessName.money = currentSave['businessMoney'];
+  //       stock = currentSave['businessStock'].toString();
+  //       businessName.stock = currentSave['businessStock'];
+  //       interest = currentSave['businessInterest'].toString();
+  //       businessName.interest = currentSave['businessInterest'];
+  //       disasterPercent = currentSave['disasterPercent'].toString();
+  //       businessName.disasterPercent = currentSave['disasterPercent'];
+  //       businessName.currentNode = currentSave['currentNode'];
+  //       businessName.setCurrentNode(currentSave['currentNode']);
+  //     });
+  //
+  //   }
+  //
+  // }
+  void printValues(){
+    print("money = ${businessName.money}");
+    print("node = ${businessName.currentNode}");
+    print("stock = ${businessName.stock}");
+    print("interest = ${businessName.interest}");
 
-    }else{
-      var currentSave = await firestoreService.getSave(businessName.save)as DocumentSnapshot;
-
-      setState(() {
-        money = currentSave['businessMoney'].toString();
-        businessName.money = currentSave['businessMoney'];
-        stock = currentSave['businessStock'].toString();
-        businessName.stock = currentSave['businessStock'];
-        interest = currentSave['businessInterest'].toString();
-        businessName.interest = currentSave['businessInterest'];
-        disasterPercent = currentSave['disasterPercent'].toString();
-        businessName.disasterPercent = currentSave['disasterPercent'];
-      });
-
-    }
 
   }
   void buttonHandler(int option) {
-    print("money after stuff :${businessName.money}");
-
     setState(() {
       Node? nodeOption;
       int? amountOfMoney = 0;

@@ -8,7 +8,7 @@ class FirestoreService{
     return ref.add({
       'saveName': name,
       'timestamp': Timestamp.now(),
-      'current node': node,
+      'currentNode': node,
       'businessMoney': money,
       'businessStock': stock,
       'businessInterest': interest,
