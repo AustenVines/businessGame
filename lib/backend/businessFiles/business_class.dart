@@ -1,64 +1,62 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../services/firestore.dart';
-
-class Business{
-  String save = "";
-  int currentNode = 0;
-  int money = 50000; // as a starting point
-  double interest = 0;
-  double maxInterest = 100;
-  double minInterest = 0;
-  int stock = 0;
-  double maxStock = 100;
-  double minStock = 0;
+class BusinessGame {
+  int currentNode;
+  int money;
+  double interest;
+  int stock;
   double disasterPercent = 0;
 
-  FirestoreService firestoreService = FirestoreService();
+   BusinessGame(this.currentNode, this.money, this.stock, this.interest, this.disasterPercent);
 
-  void loadSave(String docID) async{
+  @override
+  String toString(){
+    String business = "current node: $currentNode and money: $money";
+    return business;
+  }
 
-    var save = await firestoreService.getSave(docID) as DocumentSnapshot;
-    print(save['businessMoney']);
-    if(save['saveName'] == ""){
-      print("nothing to load");
-    }else{
-      money = save['businessMoney'];
-      currentNode = save['currentNode'];
+  // Getters
+  int getMoney() => money;
+  double getInterest() => interest;
+  int getStock() => stock;
+  double getDisaster() => disasterPercent;
+
+  // Setters
+  void setMoney(int amount) {
+    if (amount != 0) {
+      money = amount;
     }
   }
 
-  int getMoney(){
-    return money;
-  }
-  double getInterest(){
-    return interest;
-  }
-  int getStock(){
-    return stock;
-  }
-  double getDisaster(){
-    return disasterPercent;
-  }
-  void editMoney(int amount){
-    if(amount != 0){
-      money += amount;
-    }
-  }
-
-  void editIntrest(int amount){
-    if(amount + interest >= minInterest && amount + interest <= maxInterest){
+  // Edit interest with validation
+  void editInterest(double amount) {
+    if (amount + interest >= 0 && amount + interest <= 100) {
       interest += amount;
+    } else {
+      print("Interest change is out of bounds.");
     }
   }
-  void editStock(int amount){
-    if(amount + stock >= minStock && amount + stock <= maxStock){
-      stock += amount;
-    }
-  }
-  void editDisasterPercent(int amount) {
+
+  // Edit stock with validation
+  void editStock(int amount) {
     if (amount + stock >= 0 && amount + stock <= 100) {
       stock += amount;
+    } else {
+      print("Stock change is out of bounds.");
     }
+  }
+
+  // Edit disaster percentage with validation
+  void editDisasterPercent(double amount) {
+    if (amount + disasterPercent >= 0 && amount + disasterPercent <= 100) {
+      disasterPercent += amount;
+    } else {
+      print("Disaster percentage change is out of bounds.");
+    }
+  }
+  void decreaseMoney(int amount){
+    money = money - amount;
+  }
+  void increaseMoney(int amount){
+    money += amount;
   }
 }

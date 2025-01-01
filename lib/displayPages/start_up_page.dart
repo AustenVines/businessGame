@@ -20,14 +20,14 @@ class StartupPageState extends State<StartupPage> {
   void grabSave(String docID) async {
     var start = await firestoreService.getSave(docID) as DocumentSnapshot;
     setState(() {
+      print(displaySelectedSave);
       displaySelectedSave = start['saveName'];
     });
   }
 
-  void holdSave(String docID) {
-    businessName.save = docID;
-    print(businessName.save);
-  }
+  // void holdSave(String docID) {
+  //   currentBusiness.save = docID;
+  // }
 
   void editSave(String docID) {
     showDialog(context: context,
@@ -130,7 +130,7 @@ class StartupPageState extends State<StartupPage> {
                             ),
                             onTap: () {
                               grabSave(docID);
-                              holdSave(docID);
+                              // holdSave(docID);
                             },
                             trailing: IconButton(
                               onPressed: () => editSave(docID),
