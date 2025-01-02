@@ -35,6 +35,7 @@ class GamePageState extends State<GamePage> {
   String interest = "";
   String stock = "";
   String disasterPercent = "";
+  int nodeID = loadedGame.getNode(playersBusiness);
 
 
   @override
@@ -54,7 +55,7 @@ class GamePageState extends State<GamePage> {
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
       disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
-      int nodeID = loadedGame.getNode(playersBusiness);
+      nodeID = loadedGame.getNode(playersBusiness);
 
       Node? current = box.get(nodeID);
       if(current != null) {
@@ -80,22 +81,27 @@ class GamePageState extends State<GamePage> {
       int? amountOfStock = 0;
       double? amountOfInterest = 0;
       double? amountOfDisaster = 0;
+      int? newNodeId = 0;
       if (option == 1) {
         nodeOption = box.get(optionA);
         amountOfMoney = box.get(0)?.costOfOptionA;
         amountOfStock = 3;
         amountOfInterest = 3;
+        newNodeId = optionA;
       } else if (option == 2) {
         nodeOption = box.get(optionB);
         amountOfMoney = box.get(0)?.costOfOptionB;
         amountOfStock = 2;
         amountOfInterest = 2;
+        newNodeId = optionB;
       } else {
         nodeOption = box.get(optionC);
         amountOfMoney = box.get(0)?.costOfOptionC;
         amountOfStock = 1;
         amountOfInterest = 1;
+        newNodeId = optionB;
       }
+      loadedGame.setCurrentNode(playersBusiness, newNodeId);
       loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
       loadedGame.editInterest(playersBusiness, amountOfInterest);
       loadedGame.editStock(playersBusiness, amountOfStock);
@@ -104,6 +110,7 @@ class GamePageState extends State<GamePage> {
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
       disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
+      nodeID = loadedGame.getNode(playersBusiness);
 
       loadedGame.saleMaker(playersBusiness);
       if (nodeOption != null) {
@@ -133,6 +140,32 @@ class GamePageState extends State<GamePage> {
       isButton2Visible = !isButton2Visible;
       isButton3Visible = !isButton3Visible;
     });
+  }
+
+  void saveGame(){
+    if(loadedGame.getSaveName(playersBusiness) == ""){
+      print("new save");
+
+      TextEditingController textController = TextEditingController();
+      showDialog(context: context,
+          builder: (context) =>
+              AlertDialog(
+                content: TextField(
+                  controller: textController,
+                ),
+                actions: [
+                  ElevatedButton(onPressed: () {
+                    firestoreService.addSave(textController.text, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness),
+                        loadedGame.getStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
+                    textController.clear();
+
+                    Navigator.pop(context);
+                  }, child: const Text("Save"))
+                ],
+              ));
+    }else{
+      print("update save");
+    }
   }
 
 
@@ -212,6 +245,9 @@ class GamePageState extends State<GamePage> {
                   ),
                   Column(
                     children: [
+                      TextButton(onPressed: () {
+                        saveGame();
+                      }, child: const Text("Save Game")),
                       Text("optionDisplay3"),
                       Text(displayForAnswer3),
                       isButton3Visible ?

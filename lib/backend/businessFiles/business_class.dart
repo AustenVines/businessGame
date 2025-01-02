@@ -1,5 +1,6 @@
 
 class BusinessGame {
+  String saveName = "";
   int currentNode;
   int money;
   double interest;
@@ -20,6 +21,8 @@ class BusinessGame {
   int getStock() => stock;
   double getDisaster() => disasterPercent;
   int getCurrentNode() => currentNode;
+  String getSaveName() => saveName;
+
 
   // Setters
   void setMoney(int amount) {
@@ -44,6 +47,9 @@ class BusinessGame {
   }
   void setNode(int node){
     currentNode = node;
+  }
+  void setSaveName(String name){
+    saveName = name;
   }
 
   // Edit interest with validation

@@ -16,11 +16,14 @@ class Play{
       double interest = save['businessInterest'];
       double disaster = save['disasterPercent'];
       int currentNode = save['currentNode'];
+      String saveName = save['saveName'];
       business.setMoney(money);
       business.setStock(stock);
       business.setInterest(interest);
       business.setDisaster(disaster);
       business.setNode(currentNode);
+      business.setSaveName(saveName);
+
     }
 
   }
@@ -39,6 +42,9 @@ class Play{
   }
   int getNode(BusinessGame business){
     return business.getCurrentNode();
+  }
+  String getSaveName(BusinessGame business){
+    return business.getSaveName();
   }
 
   void setCurrentNode(BusinessGame business, int node){
