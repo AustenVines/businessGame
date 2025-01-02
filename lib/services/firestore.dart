@@ -68,4 +68,8 @@ class FirestoreService{
   }
 
   //delete saves on database
+
+  Future<void> deleteSave(String docID){
+    return ref.doc(docID).delete();
+  }
 }

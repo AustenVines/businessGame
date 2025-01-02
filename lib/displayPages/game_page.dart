@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
+
 FirestoreService firestoreService = FirestoreService();
 BusinessGame playersBusiness = BusinessGame(0, 0, 0, 0, 0);
 Play loadedGame = Play();
@@ -37,7 +38,6 @@ class GamePageState extends State<GamePage> {
   String stock = "";
   String disasterPercent = "";
   int nodeID = loadedGame.getNode(playersBusiness);
-
 
   @override
 
@@ -146,7 +146,6 @@ class GamePageState extends State<GamePage> {
   }
 
   void saveGame(){
-    print("save name = ${loadedGame.getSaveName(playersBusiness)}");
     if(selectedSave == ""){
       TextEditingController textController = TextEditingController();
       showDialog(context: context,
@@ -166,10 +165,8 @@ class GamePageState extends State<GamePage> {
                   }, child: const Text("Save"))
                 ],
               ));
-      print("object");
 
     }else{
-      print("update save");
       firestoreService.updateSave(selectedSave, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness), loadedGame.getStock(playersBusiness),
           loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
     }
@@ -196,7 +193,7 @@ class GamePageState extends State<GamePage> {
                     Text("interest percentage: $interest%"),
                     Text("Stock level: $stock"),
                     Text("disaster percentage: $disasterPercent%"),
-                    Text("optionDisplay1"),
+                    const Text("optionDisplay1"),
                     Text(displayForAnswer1),
                     isButton1Visible ?
                     MaterialButton(
@@ -224,7 +221,7 @@ class GamePageState extends State<GamePage> {
                 ),
                   Column(
                     children: [
-                      Text("optionDisplay2"),
+                      const Text("optionDisplay2"),
                       Text(displayForAnswer2),
                       isButton2Visible ?
                       MaterialButton(
@@ -255,7 +252,7 @@ class GamePageState extends State<GamePage> {
                       TextButton(onPressed: () {
                         saveGame();
                       }, child: const Text("Save Game")),
-                      Text("optionDisplay3"),
+                      const Text("optionDisplay3"),
                       Text(displayForAnswer3),
                       isButton3Visible ?
                       MaterialButton(

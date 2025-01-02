@@ -1,3 +1,4 @@
+
 import 'package:businessGameApp/displayPages/game_page.dart';
 import 'package:businessGameApp/services/firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,44 +20,63 @@ class StartupPageState extends State<StartupPage> {
   String displaySelectedSave = "Previous save (click save you want to load)";
 
   void grabSave(String docID) async {
-    var save = await firestoreService.getSave(docID) as DocumentSnapshot;
-    setState(() {
-      if (displaySelectedSave == save['saveName']){
-        displaySelectedSave = "Previous save (click save you want to load)";
-      }else{
-        displaySelectedSave = save['saveName'];
-      }
-
-    });
+    try {
+      var save = await firestoreService.getSave(docID) as DocumentSnapshot;
+      setState(() {
+        if (displaySelectedSave == save['saveName']) {
+          displaySelectedSave = "Previous save (click save you want to load)";
+        } else {
+          displaySelectedSave = save['saveName'];
+        }
+      });
+    } catch (e) {
+      // Handle exception and log the error
+      print("Error fetching save: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to fetch save")),
+      );
+    }
   }
 
   void holdSave(String docID) {
-    if (selectedSave == docID){
-      selectedSave = "";
-    }else{
-      selectedSave = docID;
+    try {
+      if (selectedSave == docID) {
+        selectedSave = "";
+      } else {
+        selectedSave = docID;
+      }
+    } catch (e) {
+      // Handle exception and log the error
+      print("Error holding save: $e");
     }
-
-
   }
 
   void editSave(String docID) {
-    showDialog(context: context,
-        builder: (context) =>
-            AlertDialog(
-              content: TextField(
-                controller: textController,
-              ),
-              actions: [
-                ElevatedButton(onPressed: () {
-                  firestoreService.updateSaveName(docID, textController.text);
-
-                  textController.clear();
-
-                  Navigator.pop(context);
-                }, child: const Text("Save"))
-              ],
-            ));
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: TextField(
+          controller: textController,
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await firestoreService.updateSaveName(docID, textController.text);
+                textController.clear();
+                Navigator.pop(context);
+              } catch (e) {
+                print("Error updating save name: $e");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Failed to update save name")),
+                );
+              }
+            },
+            child: const Text("Save"),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -88,8 +108,16 @@ class StartupPageState extends State<StartupPage> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const GamePage()));
+                  if (selectedSave != "") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const GamePage()),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("No save selected")),
+                    );
+                  }
                 },
                 child: Text("Continue with $displaySelectedSave"),
               ),
@@ -118,40 +146,65 @@ class StartupPageState extends State<StartupPage> {
                     if (snapshot.hasData) {
                       List<DocumentSnapshot> savesList = snapshot.data!.docs;
 
-                      // Check if the list is empty
                       if (savesList.isEmpty) {
                         return const Center(
                           child: Text("No saves"),
                         );
                       }
 
-                      // Display the list of saves
                       return ListView.builder(
                         itemCount: savesList.length,
                         itemBuilder: (context, index) {
                           DocumentSnapshot document = savesList[index];
                           String docID = document.id;
 
-                          Map<String, dynamic> data =
-                          document.data() as Map<String, dynamic>;
-                          String saveName = data['saveName'];
+                          try {
+                            Map<String, dynamic> data =
+                            document.data() as Map<String, dynamic>;
+                            String saveName = data['saveName'];
 
-                          return ListTile(
-                            title: Text(saveName),
-                            subtitle: Text(
-                              "Saved on: ${DateFormat('yyyy-MM-dd HH:mm')
-                                  .format(
-                                  (data['timestamp'] as Timestamp).toDate())}",
-                            ),
-                            onTap: () {
-                              grabSave(docID);
-                              holdSave(docID);
-                            },
-                            trailing: IconButton(
-                              onPressed: () => editSave(docID),
-                              icon: const Icon(Icons.settings),
-                            ),
-                          );
+                            return ListTile(
+                              title: Text(saveName),
+                              subtitle: Text(
+                                "Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",
+                              ),
+                              onTap: () {
+                                grabSave(docID);
+                                holdSave(docID);
+                              },
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => editSave(docID),
+                                    icon: const Icon(Icons.settings),
+                                  ),
+                                  IconButton(
+                                    onPressed: () async {
+                                      try {
+                                        selectedSave = "";
+                                        await firestoreService.deleteSave(docID);
+                                      } catch (e) {
+                                        print("Error deleting save: $e");
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content:
+                                              Text("Failed to delete save")),
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } catch (e) {
+                            print("Error processing document: $e");
+                            return const ListTile(
+                              title: Text("Error loading save"),
+                            );
+                          }
                         },
                       );
                     } else {
