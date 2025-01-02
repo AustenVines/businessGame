@@ -35,52 +35,51 @@ class GamePageState extends State<GamePage> {
   String interest = "";
   String stock = "";
   String disasterPercent = "";
-  void doLoad() async{
-    await loadedGame.load(playersBusiness, selectedSave);
 
-    setState(()  {
-      money = loadedGame.getMoney(playersBusiness).toString();
-    });
-  }
+
   @override
 
   void initState() {
     super.initState();
 
-    doLoad();
+    updateValues();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-      setState(() {
-        loadedGame.load(playersBusiness, selectedSave);
-        interest = loadedGame.getInterest(playersBusiness).toString();
-        stock = loadedGame.getStock(playersBusiness).toString();
-        disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
-
-        Node? current = box.get(0);
-        if(current != null) {
-          iD = current.iD;
-          optionA = current.optionA;
-          optionB = current.optionB;
-          optionC = current.optionC;
-          displayForQuestion = current.displayText;
-          displayForAnswer1 = current.answerA;
-          displayForAnswer2 = current.answerB;
-          displayForAnswer3 = current.answerC;
-          costOfOptionA = current.costOfOptionA;
-          costOfOptionB = current.costOfOptionB;
-          costOfOptionC = current.costOfOptionC;
-        }
-      });
     });
   }
+  void updateValues() async{
+    await loadedGame.load(playersBusiness, selectedSave);
 
+    setState(()  {
+      money = loadedGame.getMoney(playersBusiness).toString();
+      interest = loadedGame.getInterest(playersBusiness).toString();
+      stock = loadedGame.getStock(playersBusiness).toString();
+      disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
+      int nodeID = loadedGame.getNode(playersBusiness);
+
+      Node? current = box.get(nodeID);
+      if(current != null) {
+        iD = current.iD;
+        optionA = current.optionA;
+        optionB = current.optionB;
+        optionC = current.optionC;
+        displayForQuestion = current.displayText;
+        displayForAnswer1 = current.answerA;
+        displayForAnswer2 = current.answerB;
+        displayForAnswer3 = current.answerC;
+        costOfOptionA = current.costOfOptionA;
+        costOfOptionB = current.costOfOptionB;
+        costOfOptionC = current.costOfOptionC;
+      }
+
+    });
+  }
   void buttonHandler(int option) {
     setState(() {
       Node? nodeOption;
       int? amountOfMoney = 0;
       int? amountOfStock = 0;
       double? amountOfInterest = 0;
-      double? amountOfDistaster = 0;
+      double? amountOfDisaster = 0;
       if (option == 1) {
         nodeOption = box.get(optionA);
         amountOfMoney = box.get(0)?.costOfOptionA;
@@ -100,7 +99,7 @@ class GamePageState extends State<GamePage> {
       loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
       loadedGame.editInterest(playersBusiness, amountOfInterest);
       loadedGame.editStock(playersBusiness, amountOfStock);
-      loadedGame.editDisaster(playersBusiness, amountOfDistaster);
+      loadedGame.editDisaster(playersBusiness, amountOfDisaster);
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
@@ -122,7 +121,6 @@ class GamePageState extends State<GamePage> {
 
       }
     });
-
   }
 
   bool isButton1Visible = true;

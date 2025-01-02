@@ -19,6 +19,7 @@ class BusinessGame {
   double getInterest() => interest;
   int getStock() => stock;
   double getDisaster() => disasterPercent;
+  int getCurrentNode() => currentNode;
 
   // Setters
   void setMoney(int amount) {

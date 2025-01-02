@@ -38,7 +38,7 @@ class Play{
     return business.getDisaster();
   }
   int getNode(BusinessGame business){
-    return business.currentNode;
+    return business.getCurrentNode();
   }
 
   void setCurrentNode(BusinessGame business, int node){
