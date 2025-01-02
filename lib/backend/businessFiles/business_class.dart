@@ -1,5 +1,6 @@
 
 class BusinessGame {
+  String saveID = "";
   String saveName = "";
   int currentNode;
   int money;
@@ -22,9 +23,13 @@ class BusinessGame {
   double getDisaster() => disasterPercent;
   int getCurrentNode() => currentNode;
   String getSaveName() => saveName;
+  String getSaveID() => saveID;
 
 
   // Setters
+  void setSaveID(String newSaveID){
+    saveID = newSaveID;
+  }
   void setMoney(int amount) {
     if (amount != 0) {
       money = amount;

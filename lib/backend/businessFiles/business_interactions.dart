@@ -1,15 +1,19 @@
 
 import 'dart:math';
 import 'package:businessGameApp/backend/businessFiles/business_class.dart';
+import 'package:businessGameApp/displayPages/game_page.dart';
 import '../../services/firestore.dart';
 
 class Play{
 
   Future<void> load(BusinessGame business, String docID) async{
+    FirestoreService firestoreService = FirestoreService();
+
     if (docID == ""){
+      print("save name = ${loadedGame.getSaveName(playersBusiness)}");
       business.setMoney(50000);
     }else{
-      FirestoreService firestoreService = FirestoreService();
+
       var save = await firestoreService.getSave(docID);
       int money = save['businessMoney'];
       int stock = save['businessStock'];
@@ -23,11 +27,12 @@ class Play{
       business.setDisaster(disaster);
       business.setNode(currentNode);
       business.setSaveName(saveName);
-
     }
 
   }
-
+  String getSaveID(BusinessGame business){
+    return business.getSaveID();
+  }
   int getMoney(BusinessGame business){
     return business.getMoney();
   }
@@ -46,7 +51,9 @@ class Play{
   String getSaveName(BusinessGame business){
     return business.getSaveName();
   }
-
+  void setSaveName(BusinessGame business, name){
+    business.setSaveName(name);
+  }
   void setCurrentNode(BusinessGame business, int node){
     business.currentNode = node;
   }

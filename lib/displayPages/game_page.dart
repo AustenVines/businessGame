@@ -1,11 +1,12 @@
 
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
 import 'package:businessGameApp/displayPages/start_up_page.dart';
+import 'package:businessGameApp/services/firestore.dart';
 import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
-
+FirestoreService firestoreService = FirestoreService();
 BusinessGame playersBusiness = BusinessGame(0, 0, 0, 0, 0);
 Play loadedGame = Play();
 
@@ -44,9 +45,11 @@ class GamePageState extends State<GamePage> {
     super.initState();
 
     updateValues();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
     });
   }
+
   void updateValues() async{
     await loadedGame.load(playersBusiness, selectedSave);
 
@@ -143,9 +146,8 @@ class GamePageState extends State<GamePage> {
   }
 
   void saveGame(){
+    print("save name = ${loadedGame.getSaveName(playersBusiness)}");
     if(loadedGame.getSaveName(playersBusiness) == ""){
-      print("new save");
-
       TextEditingController textController = TextEditingController();
       showDialog(context: context,
           builder: (context) =>
@@ -154,15 +156,19 @@ class GamePageState extends State<GamePage> {
                   controller: textController,
                 ),
                 actions: [
-                  ElevatedButton(onPressed: () {
+                  ElevatedButton(onPressed: () async {
                     firestoreService.addSave(textController.text, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness),
                         loadedGame.getStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
+                    String? lastSaveId = await firestoreService.getLastSaveId();
+                    loadedGame.setSaveName(playersBusiness, lastSaveId);
                     textController.clear();
-
+                    selectedSave = lastSaveId!;
                     Navigator.pop(context);
                   }, child: const Text("Save"))
                 ],
               ));
+      print("object");
+
     }else{
       print("update save");
       firestoreService.updateSave(selectedSave, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness), loadedGame.getStock(playersBusiness),
