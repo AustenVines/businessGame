@@ -165,6 +165,8 @@ class GamePageState extends State<GamePage> {
               ));
     }else{
       print("update save");
+      firestoreService.updateSave(selectedSave, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness), loadedGame.getStock(playersBusiness),
+          loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
     }
   }
 

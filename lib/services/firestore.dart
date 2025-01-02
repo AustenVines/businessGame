@@ -26,9 +26,20 @@ class FirestoreService{
     return currentSave;
   }
   //update a save on database
-  Future<void> updateSave(String docID, String newName) {
+  Future<void> updateSaveName(String docID, String newName) {
     return ref.doc(docID).update({
       'saveName': newName,
+    });
+  }
+  Future<void> updateSave(String docID, node, money, stock, interest, disasterPercent) {
+    return ref.doc(docID).update({
+      'timestamp': Timestamp.now(),
+      'currentNode': node,
+      'businessMoney': money,
+      'businessStock': stock,
+      'businessInterest': interest,
+      'disasterPercent': disasterPercent,
+
     });
   }
 

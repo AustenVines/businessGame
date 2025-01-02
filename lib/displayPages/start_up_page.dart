@@ -49,7 +49,7 @@ class StartupPageState extends State<StartupPage> {
               ),
               actions: [
                 ElevatedButton(onPressed: () {
-                  firestoreService.updateSave(docID, textController.text);
+                  firestoreService.updateSaveName(docID, textController.text);
 
                   textController.clear();
 
