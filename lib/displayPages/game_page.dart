@@ -147,7 +147,7 @@ class GamePageState extends State<GamePage> {
 
   void saveGame(){
     print("save name = ${loadedGame.getSaveName(playersBusiness)}");
-    if(loadedGame.getSaveName(playersBusiness) == ""){
+    if(selectedSave == ""){
       TextEditingController textController = TextEditingController();
       showDialog(context: context,
           builder: (context) =>
@@ -160,7 +160,6 @@ class GamePageState extends State<GamePage> {
                     firestoreService.addSave(textController.text, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness),
                         loadedGame.getStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
                     String? lastSaveId = await firestoreService.getLastSaveId();
-                    loadedGame.setSaveName(playersBusiness, lastSaveId);
                     textController.clear();
                     selectedSave = lastSaveId!;
                     Navigator.pop(context);

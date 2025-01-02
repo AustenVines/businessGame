@@ -1,7 +1,6 @@
 
 import 'dart:math';
 import 'package:businessGameApp/backend/businessFiles/business_class.dart';
-import 'package:businessGameApp/displayPages/game_page.dart';
 import '../../services/firestore.dart';
 
 class Play{
@@ -10,7 +9,6 @@ class Play{
     FirestoreService firestoreService = FirestoreService();
 
     if (docID == ""){
-      print("save name = ${loadedGame.getSaveName(playersBusiness)}");
       business.setMoney(50000);
     }else{
 
