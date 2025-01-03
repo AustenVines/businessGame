@@ -1,11 +1,14 @@
 plugins {
-    id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    // END: FlutterFire Configuration
-    id "kotlin-android"
+    id("com.android.application")
+
+    // FlutterFire Configuration for Firebase
+    id("com.google.gms.google-services")
+
+    // Kotlin support
+    id("kotlin-android")
+
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "dev.flutter.flutter-gradle-plugin"
+    id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
@@ -13,35 +16,62 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    // Optionally specify the buildToolsVersion if needed:
+    // buildToolsVersion "33.0.0"
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // Replace with your unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.base_application"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+
+        // For review and alignment with your Flutter project configuration:
         minSdk = 21
         targetSdk = flutter.targetSdkVersion
+
+        // Use flutter-provided or custom versioning:
         versionCode = flutter.versionCode
-        versionName = true
+        // It's recommended to specify a string for versionName. Use flutter.versionName if you prefer.
+        versionName = "1.0.0" // or: versionName = flutter.versionName
     }
+
+    // Example optional feature: enable viewBinding or compose
+    // buildFeatures {
+    //     viewBinding true
+    // }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // For demonstration, using debug signing so that `flutter run --release` works.
+            // In a production app, configure your own signingConfig here.
             signingConfig = signingConfigs.debug
+
+            // Additional ProGuard/R8 rules can go here:
+            // minifyEnabled true
+            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    // Example optional packaging options:
+    // packagingOptions {
+    //     resources {
+    //         excludes += "/META-INF/*"
+    //     }
+    // }
 }
 
+// Additional optional Flutter block for specifying the source directory:
 flutter {
     source = "../.."
 }
+
+// Ensure that the Google Services Gradle plugin is applied last for proper Firebase setup:
+apply plugin: "com.google.gms.google-services"
+
