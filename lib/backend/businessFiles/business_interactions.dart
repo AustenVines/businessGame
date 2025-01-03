@@ -52,27 +52,27 @@ class Play{
   void setSaveName(BusinessGame business, name){
     business.setSaveName(name);
   }
-  void setCurrentNode(BusinessGame business, int node){
+  Future<void> setCurrentNode(BusinessGame business, int node)async {
     business.currentNode = node;
   }
 
-  void decreaseMoney(BusinessGame business, int amount){
+  Future<void> decreaseMoney(BusinessGame business, int amount)async {
     business.decreaseMoney(amount);
   }
-  void increaseMoney(BusinessGame business, int amount){
+  Future<void> increaseMoney(BusinessGame business, int amount)async {
     business.increaseMoney(amount);
   }
-  void editInterest(BusinessGame business, double amount){
+  Future<void> editInterest(BusinessGame business, double amount)async {
     business.editInterest(amount);
   }
-  void editStock(BusinessGame business, int amount){
+  Future<void> editStock(BusinessGame business, int amount)async {
     business.editStock(amount);
   }
-  void editDisaster(BusinessGame business, double amount){
+  Future<void> editDisaster(BusinessGame business, double amount)async {
     business.editDisasterPercent(amount);
   }
 
-  void saleMaker(BusinessGame business){
+  Future<void> saleMaker(BusinessGame business)async {
     endGame(business);
     Random saleSize = Random();
     // print(saleSize.nextInt(50000));

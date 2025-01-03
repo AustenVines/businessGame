@@ -55,7 +55,6 @@ class FirestoreService{
     });
   }
   Future<void> updateSave(String docID, node, money, stock, interest, disasterPercent) {
-    print("$docID, $node, $money, $stock, $interest, $disasterPercent");
     return ref.doc(docID).update({
       'timestamp': Timestamp.now(),
       'currentNode': node,

@@ -1,4 +1,3 @@
-
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
 import 'package:businessGameApp/displayPages/start_up_page.dart';
 import 'package:businessGameApp/services/firestore.dart';
@@ -38,6 +37,7 @@ class GamePageState extends State<GamePage> {
   String stock = "";
   String disasterPercent = "";
   int nodeID = loadedGame.getNode(playersBusiness);
+
 
   @override
 
@@ -165,7 +165,6 @@ class GamePageState extends State<GamePage> {
                   }, child: const Text("Save"))
                 ],
               ));
-
     }else{
       firestoreService.updateSave(selectedSave, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness), loadedGame.getStock(playersBusiness),
           loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
@@ -189,11 +188,11 @@ class GamePageState extends State<GamePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [Column(
                   children: [
-                    Text("Money: £$money"),
+                    Text("Money: £${loadedGame.getMoney(playersBusiness).toString()}"),
                     Text("interest percentage: $interest%"),
                     Text("Stock level: $stock"),
                     Text("disaster percentage: $disasterPercent%"),
-                    const Text("optionDisplay1"),
+                    Text("optionDisplay1"),
                     Text(displayForAnswer1),
                     isButton1Visible ?
                     MaterialButton(
@@ -221,7 +220,7 @@ class GamePageState extends State<GamePage> {
                 ),
                   Column(
                     children: [
-                      const Text("optionDisplay2"),
+                      Text("optionDisplay2"),
                       Text(displayForAnswer2),
                       isButton2Visible ?
                       MaterialButton(
@@ -252,7 +251,7 @@ class GamePageState extends State<GamePage> {
                       TextButton(onPressed: () {
                         saveGame();
                       }, child: const Text("Save Game")),
-                      const Text("optionDisplay3"),
+                      Text("optionDisplay3"),
                       Text(displayForAnswer3),
                       isButton3Visible ?
                       MaterialButton(
