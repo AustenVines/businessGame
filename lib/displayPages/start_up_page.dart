@@ -19,6 +19,13 @@ class StartupPageState extends State<StartupPage> {
   final TextEditingController textController = TextEditingController();
   String displaySelectedSave = "Previous save (click save you want to load)";
 
+  @override
+  void initState() {
+    super.initState();
+    // Reset selectedSave whenever the page is loaded
+    selectedSave = "";
+  }
+
   void grabSave(String docID) async {
     try {
       var save = await firestoreService.getSave(docID) as DocumentSnapshot;
@@ -189,8 +196,8 @@ class StartupPageState extends State<StartupPage> {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
-                                              content:
-                                              Text("Failed to delete save")),
+                                              content: Text(
+                                                  "Failed to delete save")),
                                         );
                                       }
                                     },

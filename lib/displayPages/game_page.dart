@@ -77,7 +77,7 @@ class GamePageState extends State<GamePage> {
 
     });
   }
-  void buttonHandler(int option) {
+  Future<void> buttonHandler(int option) async{
     setState(() {
       Node? nodeOption;
       int? amountOfMoney = 0;
@@ -196,7 +196,7 @@ class GamePageState extends State<GamePage> {
                     Text(displayForAnswer1),
                     isButton1Visible ?
                     MaterialButton(
-                      onPressed: () {buttonHandler(1);},//
+                      onPressed: () async {await buttonHandler(1);},//
                       color: const Color(0xff3a21d9),
                       elevation: 0,
                       shape: const RoundedRectangleBorder(
@@ -224,7 +224,7 @@ class GamePageState extends State<GamePage> {
                       Text(displayForAnswer2),
                       isButton2Visible ?
                       MaterialButton(
-                        onPressed: () {buttonHandler(2);}, // buttonHandler(2);
+                        onPressed: () async {await buttonHandler(2);}, // buttonHandler(2);
                         color: const Color(0xff3a21d9),
                         elevation: 0,
                         shape: const RoundedRectangleBorder(
@@ -255,7 +255,7 @@ class GamePageState extends State<GamePage> {
                       Text(displayForAnswer3),
                       isButton3Visible ?
                       MaterialButton(
-                        onPressed: () {buttonHandler(3);}, // buttonHandler(3);
+                        onPressed: () async {await buttonHandler(3);}, // buttonHandler(3);
                         color: const Color(0xff3a21d9),
                         elevation: 0,
                         shape: const RoundedRectangleBorder(
