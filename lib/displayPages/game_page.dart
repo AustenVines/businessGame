@@ -40,6 +40,8 @@ class GamePageState extends State<GamePage> {
   String stock = "";
   String disasterPercent = "";
   int nodeID = loadedGame.getNode(playersBusiness);
+  String showSaleAmount = "";
+
 
 
   @override
@@ -83,10 +85,16 @@ class GamePageState extends State<GamePage> {
 
     });
   }
+  void sales(){
+    int sale = loadedGame.saleMaker(playersBusiness);
+    if (sale != 0){
+      showSaleAmount = sale.toString();
+      // make this return the amount of money made to then show on screen
+    }
+  }
   Future<void> buttonHandler(int option) async{
-    playAudio();
-
-    setState(() {
+    print(showSaleAmount);
+    setState(()  {
       Node? nodeOption;
       int? amountOfMoney = 0;
       int? amountOfStock = 0;
@@ -117,13 +125,16 @@ class GamePageState extends State<GamePage> {
       loadedGame.editInterest(playersBusiness, amountOfInterest);
       loadedGame.editStock(playersBusiness, amountOfStock);
       loadedGame.editDisaster(playersBusiness, amountOfDisaster);
+
+      sales();
+
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
       disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
       nodeID = loadedGame.getNode(playersBusiness);
 
-      loadedGame.saleMaker(playersBusiness);
+
       if (nodeOption != null) {
         iD = nodeOption.iD;
         optionA = nodeOption.optionA;
@@ -259,6 +270,7 @@ class GamePageState extends State<GamePage> {
                       )
                           : Container(),
                     ],
+                    
                   ),
                   Column(
                     children: [
@@ -291,9 +303,19 @@ class GamePageState extends State<GamePage> {
                           : Container(),
                     ],
                   ),
+
                 ]
             ),
-          ],),
+            Container(
+              height: 25,
+              width: 10,
+              alignment: Alignment.bottomLeft,
+              padding: const EdgeInsets.all(40.0),
+              color: Colors.black,
+            )
+          ],
+         ),
+           
         ),
 
 

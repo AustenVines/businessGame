@@ -72,19 +72,26 @@ class Play{
     business.editDisasterPercent(amount);
   }
 
-  Future<void> saleMaker(BusinessGame business)async {
+  int saleMaker(BusinessGame business) {
     endGame(business);
     Random saleSize = Random();
     // print(saleSize.nextInt(50000));
-    int saleAmount = saleSize.nextInt(30000);
+    int amount = saleSize.nextInt(30000);
+    int saleAmount = 0;
     int chanceOfSale = saleSize.nextInt(100);
     if(chanceOfSale <= business.interest && business.stock > 0){
-      business.increaseMoney(saleAmount);
+      business.increaseMoney(amount);
+      print(saleAmount);
+
+      saleAmount = amount;
+      return saleAmount;
     }
     else{
-
+      return saleAmount;
     }
+
   }
+
   void endGame(BusinessGame business){
     if(business.money <= 0){
       // print("end game");
