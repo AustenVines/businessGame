@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
 import 'package:businessGameApp/displayPages/start_up_page.dart';
 import 'package:businessGameApp/services/firestore.dart';
@@ -20,6 +21,8 @@ class GamePage extends StatefulWidget {
 }
 
 class GamePageState extends State<GamePage> {
+  final audioPlayer = AudioPlayer();
+
   late Node? currentNode = box.get(0);
   late int iD;
   late int optionA;
@@ -49,7 +52,10 @@ class GamePageState extends State<GamePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
     });
   }
-
+  void playAudio(){
+    String audioPath = "assets/sounds/sale.mp3";
+    audioPlayer.play(audioPath, isLocal: true);
+  }
   void updateValues() async{
     await loadedGame.load(playersBusiness, selectedSave);
 
@@ -78,6 +84,8 @@ class GamePageState extends State<GamePage> {
     });
   }
   Future<void> buttonHandler(int option) async{
+    playAudio();
+
     setState(() {
       Node? nodeOption;
       int? amountOfMoney = 0;
@@ -175,14 +183,19 @@ class GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xff3e87c5),
         body:
-        Column(
+         DecoratedBox(decoration: const BoxDecoration(
+          image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
+            fit: BoxFit.cover,
+          ),
+        ),child: Column(
           children: [
             Row(
+
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
                 Text(displayForQuestion)
               ],),Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,6 +206,7 @@ class GamePageState extends State<GamePage> {
                     Text("Stock level: $stock"),
                     Text("disaster percentage: $disasterPercent%"),
                     Text("optionDisplay1"),
+
                     Text(displayForAnswer1),
                     isButton1Visible ?
                     MaterialButton(
@@ -279,7 +293,11 @@ class GamePageState extends State<GamePage> {
                   ),
                 ]
             ),
-          ],)
+          ],),
+        ),
+
+
+
     );
 
   }
