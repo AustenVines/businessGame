@@ -89,6 +89,7 @@ class GamePageState extends State<GamePage> {
     int sale = loadedGame.saleMaker(playersBusiness);
     if (sale != 0){
       showSaleAmount = sale.toString();
+      playAudio();
       // make this return the amount of money made to then show on screen
     }
   }
@@ -324,3 +325,116 @@ class GamePageState extends State<GamePage> {
 
   }
 }
+//Scaffold(
+//       body: Stack(
+//         children: [
+//           Align(alignment: const Alignment(0.0, -0.2),
+//           child: Container(
+//             width: 1000,
+//     height: 600,
+//     color: Colors.grey,
+//     child:
+//       Column(
+//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//         children: [
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: [Container(color: Colors.black,
+//             width: 100,
+//             height: 20,
+//           )],),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//             children: [
+//             Container(
+//               color: Colors.blue,
+//               width: 100,
+//               height: 100,
+//             ),
+//             Container(
+//               color: Colors.blue,
+//               width: 100,
+//               height: 100,
+//             ),
+//             Container(
+//               color: Colors.blue,
+//               width: 100,
+//               height: 100,
+//             ),
+//           ],),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//             children: [
+//               Container(
+//                 color: Colors.purple,
+//                 width: 100,
+//                 height: 300,
+//               ),
+//               Container(
+//                 color: Colors.purple,
+//                 width: 100,
+//                 height: 300,
+//               ),
+//               Container(
+//                 color: Colors.purple,
+//                 width: 100,
+//                 height: 300,
+//               ),
+//             ],),
+//
+//
+//         ],
+//       ),
+//     )
+//     ),
+//           Align(
+//             alignment: const Alignment(0, -0.99),
+//             child: Container(
+//               width: 1000,
+//               height: 50,
+//               color: Colors.green,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                 children: [
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                     children: [
+//                     Container(
+//                       color: Colors.cyanAccent,
+//                       width: 10,
+//                       height: 10,
+//                     ),
+//                     Container(
+//                       color: Colors.cyanAccent,
+//                       width: 10,
+//                       height: 10,
+//                     ),
+//                     Container(
+//                       color: Colors.cyanAccent,
+//                       width: 10,
+//                       height: 10,
+//                     ),
+//                     Container(
+//                       color: Colors.cyanAccent,
+//                       width: 10,
+//                       height: 10,
+//                     ),
+//                   ],)
+//                 ],
+//               ),
+//             ),
+//           ),
+//           Align(
+//             alignment: const Alignment(-0.9, 0.45),
+//             child: Container(
+//               color: Colors.red,
+//               width: 20,
+//               height: 400,
+//             ),
+//           )
+//         ]
+//       )
+//     );
+//
+//     }
+// }
