@@ -102,7 +102,7 @@ class GamePageState extends State<GamePage> {
         isVisible = false;
       });
 
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
       resetAnimation();
       // make this return the amount of money made to then show on screen
     }
@@ -208,6 +208,165 @@ class GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+            children: [
+              Align(alignment: const Alignment(0.0, -0.2),
+                  child: Container(
+                    width: 1000,
+                    height: 600,
+                    color: Colors.grey,
+                    child:
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Container(color: Colors.grey,
+                            child: Text(displayForQuestion),
+                          )],),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              color: Colors.blue,
+                              width: 100,
+                              height: 100,
+                              child: Column(children: [
+                                Text(displayForAnswer1),
+                                MaterialButton(
+                                  onPressed: () async {await buttonHandler(1);},
+                                  color: const Color(0xff3a21d9),
+                                  elevation: 0,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),//
+                                  child: const Text("Option A"),
+                                )
+                              ]
+                              ),
+                            ),
+                            Container(
+                              color: Colors.blue,
+                              width: 100,
+                              height: 100,
+                              child: Column(children: [
+                                Text(displayForAnswer1),
+                                MaterialButton(
+                                  onPressed: () async {await buttonHandler(2);},
+                                  color: const Color(0xff3a21d9),
+                                  elevation: 0,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),//
+                                  child: const Text("Option B"),
+                                )
+                              ]
+                              ),
+                            ),
+                            Container(
+                              color: Colors.blue,
+                              width: 100,
+                              height: 100,
+                              child: Column(children: [
+                                Text(displayForAnswer1),
+                                MaterialButton(
+                                  onPressed: () async {await buttonHandler(3);},
+                                  color: const Color(0xff3a21d9),
+                                  elevation: 0,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),//
+                                  child: const Text("Option C"),
+                                )
+                              ]
+                              ),
+                            ),
+                          ],),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              color: Colors.purple,
+                              width: 100,
+                              height: 300,
+                            ),
+                            Container(
+                              color: Colors.purple,
+                              width: 100,
+                              height: 300,
+                            ),
+                            Container(
+                              color: Colors.purple,
+                              width: 100,
+                              height: 300,
+                            ),
+                          ],),
+
+
+                      ],
+                    ),
+                  )
+              ),
+              Align(
+                alignment: const Alignment(0, -0.99),
+                child: Container(
+                  width: 1000,
+                  height: 50,
+                  color: Colors.green,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            color: Colors.cyanAccent,
+                            child: Text("Money £$money"),
+
+                          ),
+                          Container(
+                            color: Colors.cyanAccent,
+                            child: Text("Stock: $stock"),
+                          ),
+                          Container(
+                            color: Colors.cyanAccent,
+                            child: Text("Interest: $interest"),
+                          ),
+                          Container(
+                            color: Colors.cyanAccent,
+                            child: MenuItemButton(
+                              onPressed: (){saveGame();},
+                              child: Text("Menu"),
+                            ),
+                          ),
+                        ],)
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                  alignment: const Alignment(-0.9, 0.45),
+                  child: Container(
+                    color: Colors.red,
+                    width: 60,
+                    height: 400,
+                    child: AnimatedOpacity(opacity: isVisible ? 1.0 : 0.0, duration: const Duration(seconds: 2),
+                      child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
+                        curve: Curves.linearToEaseOut,
+                        duration: const Duration(seconds: 2),
+                        child: Text(showSaleAmount),),
+                    ),
+                  ))
+            ]
+        )
+    );
+
+  }
+}
+
+
+
 //     return Scaffold(
 //         body:
 //          DecoratedBox(decoration: const BoxDecoration(
@@ -339,161 +498,4 @@ class GamePageState extends State<GamePage> {
 //
 //   }
 // }
- return Scaffold(
-      body: Stack(
-        children: [
-          Align(alignment: const Alignment(0.0, -0.2),
-          child: Container(
-            width: 1000,
-    height: 600,
-    color: Colors.grey,
-    child:
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Container(color: Colors.grey,
-              child: Text(displayForQuestion),
-          )],),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-            Container(
-              color: Colors.blue,
-              width: 100,
-              height: 100,
-              child: Column(children: [
-                Text(displayForAnswer1),
-                MaterialButton(
-                  onPressed: () async {await buttonHandler(1);},
-                  color: const Color(0xff3a21d9),
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),//
-                  child: const Text("Option A"),
-                )
-              ]
-              ),
-            ),
-            Container(
-              color: Colors.blue,
-              width: 100,
-              height: 100,
-              child: Column(children: [
-                Text(displayForAnswer1),
-                MaterialButton(
-                  onPressed: () async {await buttonHandler(2);},
-                  color: const Color(0xff3a21d9),
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),//
-                  child: const Text("Option B"),
-                )
-              ]
-              ),
-            ),
-            Container(
-              color: Colors.blue,
-              width: 100,
-              height: 100,
-              child: Column(children: [
-                Text(displayForAnswer1),
-                MaterialButton(
-                  onPressed: () async {await buttonHandler(3);},
-                  color: const Color(0xff3a21d9),
-                  elevation: 0,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),//
-                  child: const Text("Option C"),
-                )
-              ]
-              ),
-            ),
-          ],),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                color: Colors.purple,
-                width: 100,
-                height: 300,
-              ),
-              Container(
-                color: Colors.purple,
-                width: 100,
-                height: 300,
-              ),
-              Container(
-                color: Colors.purple,
-                width: 100,
-                height: 300,
-              ),
-            ],),
-
-
-        ],
-      ),
-    )
-    ),
-          Align(
-            alignment: const Alignment(0, -0.99),
-            child: Container(
-              width: 1000,
-              height: 50,
-              color: Colors.green,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                    Container(
-                      color: Colors.cyanAccent,
-                      child: Text("Money £$money"),
-
-                    ),
-                    Container(
-                      color: Colors.cyanAccent,
-                      child: Text("Stock: $stock"),
-                    ),
-                    Container(
-                      color: Colors.cyanAccent,
-                      child: Text("Interest: $interest"),
-                    ),
-                    Container(
-                      color: Colors.cyanAccent,
-                      child: MenuItemButton(
-                        onPressed: (){saveGame();},
-                        child: Text("Menu"),
-                      ),
-                    ),
-                  ],)
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: const Alignment(-0.9, 0.45),
-            child: Container(
-              color: Colors.red,
-              width: 20,
-              height: 400,
-              child: AnimatedOpacity(opacity: isVisible ? 1.0 : 0.0, duration: const Duration(seconds: 2),
-              child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
-                curve: Curves.linearToEaseOut,
-                duration: Duration(seconds: 2),
-                child: Text(showSaleAmount),),
-            ),
-          ))
-        ]
-      )
-    );
-
-    }
-}
-
 
