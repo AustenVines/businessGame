@@ -42,6 +42,7 @@ class GamePageState extends State<GamePage> {
   int nodeID = loadedGame.getNode(playersBusiness);
   String showSaleAmount = "";
   bool saleBool = false;
+  bool isVisible = true;
 
 
 
@@ -86,14 +87,23 @@ class GamePageState extends State<GamePage> {
 
     });
   }
-  void sales(){
+  void resetAnimation() {
+    saleBool = false;
+    isVisible = true;
+    showSaleAmount = "";
+  }
+  Future<void> sales()async {
     int sale = loadedGame.saleMaker(playersBusiness);
     if (sale != 0){
       showSaleAmount = sale.toString();
       playAudio();
       setState(() {
-        saleBool = !saleBool;
+        saleBool = true;
+        isVisible = false;
       });
+
+      await Future.delayed(Duration(seconds: 2));
+      resetAnimation();
       // make this return the amount of money made to then show on screen
     }
   }
@@ -472,15 +482,18 @@ class GamePageState extends State<GamePage> {
               color: Colors.red,
               width: 20,
               height: 400,
+              child: AnimatedOpacity(opacity: isVisible ? 1.0 : 0.0, duration: const Duration(seconds: 2),
               child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
-                  curve: Curves.linearToEaseOut,
-                  duration: Duration(seconds: 2),
-              child: Text("data"),),
+                curve: Curves.linearToEaseOut,
+                duration: Duration(seconds: 2),
+                child: Text(showSaleAmount),),
             ),
-          )
+          ))
         ]
       )
     );
 
     }
 }
+
+
