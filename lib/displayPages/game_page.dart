@@ -41,6 +41,7 @@ class GamePageState extends State<GamePage> {
   String disasterPercent = "";
   int nodeID = loadedGame.getNode(playersBusiness);
   String showSaleAmount = "";
+  bool saleBool = false;
 
 
 
@@ -90,6 +91,9 @@ class GamePageState extends State<GamePage> {
     if (sale != 0){
       showSaleAmount = sale.toString();
       playAudio();
+      setState(() {
+        saleBool = !saleBool;
+      });
       // make this return the amount of money made to then show on screen
     }
   }
@@ -194,247 +198,289 @@ class GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body:
-         DecoratedBox(decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
-            fit: BoxFit.cover,
-          ),
-        ),child: Column(
-          children: [
-            Row(
-
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-
-                Text(displayForQuestion)
-              ],),Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Column(
-                  children: [
-                    Text("Money: £${loadedGame.getMoney(playersBusiness).toString()}"),
-                    Text("interest percentage: $interest%"),
-                    Text("Stock level: $stock"),
-                    Text("disaster percentage: $disasterPercent%"),
-                    Text("optionDisplay1"),
-
-                    Text(displayForAnswer1),
-                    isButton1Visible ?
-                    MaterialButton(
-                      onPressed: () async {await buttonHandler(1);},//
-                      color: const Color(0xff3a21d9),
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      textColor: const Color(0xfffffdfd),
-                      height: 40,
-                      minWidth: 140,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: const Text(
-                        "option 1",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                    )
-                        : Container(),
-                  ],
-                ),
-                  Column(
-                    children: [
-                      Text("optionDisplay2"),
-                      Text(displayForAnswer2),
-                      isButton2Visible ?
-                      MaterialButton(
-                        onPressed: () async {await buttonHandler(2);}, // buttonHandler(2);
-                        color: const Color(0xff3a21d9),
-                        elevation: 0,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        textColor: const Color(0xfffffdfd),
-                        height: 40,
-                        minWidth: 140,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: const Text(
-                          "option 2",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          ),
-                        ),
-                      )
-                          : Container(),
-                    ],
-                    
-                  ),
-                  Column(
-                    children: [
-                      TextButton(onPressed: () {
-                        saveGame();
-                      }, child: const Text("Save Game")),
-                      Text("optionDisplay3"),
-                      Text(displayForAnswer3),
-                      isButton3Visible ?
-                      MaterialButton(
-                        onPressed: () async {await buttonHandler(3);}, // buttonHandler(3);
-                        color: const Color(0xff3a21d9),
-                        elevation: 0,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        textColor: const Color(0xfffffdfd),
-                        height: 40,
-                        minWidth: 140,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: const Text(
-                          "option 3",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          ),
-                        ),
-                      )
-                          : Container(),
-                    ],
-                  ),
-
-                ]
-            ),
-            Container(
-              height: 25,
-              width: 10,
-              alignment: Alignment.bottomLeft,
-              padding: const EdgeInsets.all(40.0),
-              color: Colors.black,
-            )
-          ],
-         ),
-           
-        ),
-
-
-
-    );
-
-  }
-}
-//Scaffold(
-//       body: Stack(
-//         children: [
-//           Align(alignment: const Alignment(0.0, -0.2),
-//           child: Container(
-//             width: 1000,
-//     height: 600,
-//     color: Colors.grey,
-//     child:
-//       Column(
-//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [Container(color: Colors.black,
-//             width: 100,
-//             height: 20,
-//           )],),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//             children: [
-//             Container(
-//               color: Colors.blue,
-//               width: 100,
-//               height: 100,
-//             ),
-//             Container(
-//               color: Colors.blue,
-//               width: 100,
-//               height: 100,
-//             ),
-//             Container(
-//               color: Colors.blue,
-//               width: 100,
-//               height: 100,
-//             ),
-//           ],),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//             children: [
-//               Container(
-//                 color: Colors.purple,
-//                 width: 100,
-//                 height: 300,
-//               ),
-//               Container(
-//                 color: Colors.purple,
-//                 width: 100,
-//                 height: 300,
-//               ),
-//               Container(
-//                 color: Colors.purple,
-//                 width: 100,
-//                 height: 300,
-//               ),
-//             ],),
-//
-//
-//         ],
-//       ),
-//     )
-//     ),
-//           Align(
-//             alignment: const Alignment(0, -0.99),
-//             child: Container(
-//               width: 1000,
-//               height: 50,
-//               color: Colors.green,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 children: [
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                     children: [
-//                     Container(
-//                       color: Colors.cyanAccent,
-//                       width: 10,
-//                       height: 10,
-//                     ),
-//                     Container(
-//                       color: Colors.cyanAccent,
-//                       width: 10,
-//                       height: 10,
-//                     ),
-//                     Container(
-//                       color: Colors.cyanAccent,
-//                       width: 10,
-//                       height: 10,
-//                     ),
-//                     Container(
-//                       color: Colors.cyanAccent,
-//                       width: 10,
-//                       height: 10,
-//                     ),
-//                   ],)
-//                 ],
-//               ),
-//             ),
+//     return Scaffold(
+//         body:
+//          DecoratedBox(decoration: const BoxDecoration(
+//           image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
+//             fit: BoxFit.cover,
 //           ),
-//           Align(
-//             alignment: const Alignment(-0.9, 0.45),
-//             child: Container(
-//               color: Colors.red,
-//               width: 20,
-//               height: 400,
+//         ),child: Column(
+//           children: [
+//             Row(
+//
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               children: [
+//
+//                 Text(displayForQuestion)
+//               ],),Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [Column(
+//                   children: [
+//                     Text("Money: £${loadedGame.getMoney(playersBusiness).toString()}"),
+//                     Text("interest percentage: $interest%"),
+//                     Text("Stock level: $stock"),
+//                     Text("disaster percentage: $disasterPercent%"),
+//                     Text("optionDisplay1"),
+//
+//                     Text(displayForAnswer1),
+//                     isButton1Visible ?
+//                     MaterialButton(
+//                       onPressed: () async {await buttonHandler(1);},//
+//                       color: const Color(0xff3a21d9),
+//                       elevation: 0,
+//                       shape: const RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.zero,
+//                       ),
+//                       textColor: const Color(0xfffffdfd),
+//                       height: 40,
+//                       minWidth: 140,
+//                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//                       child: const Text(
+//                         "option 1",
+//                         style: TextStyle(
+//                           fontSize: 14,
+//                           fontWeight: FontWeight.w400,
+//                           fontStyle: FontStyle.normal,
+//                         ),
+//                       ),
+//                     )
+//                         : Container(),
+//                   ],
+//                 ),
+//                   Column(
+//                     children: [
+//                       Text("optionDisplay2"),
+//                       Text(displayForAnswer2),
+//                       isButton2Visible ?
+//                       MaterialButton(
+//                         onPressed: () async {await buttonHandler(2);}, // buttonHandler(2);
+//                         color: const Color(0xff3a21d9),
+//                         elevation: 0,
+//                         shape: const RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.zero,
+//                         ),
+//                         textColor: const Color(0xfffffdfd),
+//                         height: 40,
+//                         minWidth: 140,
+//                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//                         child: const Text(
+//                           "option 2",
+//                           style: TextStyle(
+//                             fontSize: 14,
+//                             fontWeight: FontWeight.w400,
+//                             fontStyle: FontStyle.normal,
+//                           ),
+//                         ),
+//                       )
+//                           : Container(),
+//                     ],
+//
+//                   ),
+//                   Column(
+//                     children: [
+//                       TextButton(onPressed: () {
+//                         saveGame();
+//                       }, child: const Text("Save Game")),
+//                       Text("optionDisplay3"),
+//                       Text(displayForAnswer3),
+//                       isButton3Visible ?
+//                       MaterialButton(
+//                         onPressed: () async {await buttonHandler(3);}, // buttonHandler(3);
+//                         color: const Color(0xff3a21d9),
+//                         elevation: 0,
+//                         shape: const RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.zero,
+//                         ),
+//                         textColor: const Color(0xfffffdfd),
+//                         height: 40,
+//                         minWidth: 140,
+//                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+//                         child: const Text(
+//                           "option 3",
+//                           style: TextStyle(
+//                             fontSize: 14,
+//                             fontWeight: FontWeight.w400,
+//                             fontStyle: FontStyle.normal,
+//                           ),
+//                         ),
+//                       )
+//                           : Container(),
+//                     ],
+//                   ),
+//
+//                 ]
 //             ),
-//           )
-//         ]
-//       )
+//             Container(
+//               height: 25,
+//               width: 10,
+//               alignment: Alignment.bottomLeft,
+//               padding: const EdgeInsets.all(40.0),
+//               color: Colors.black,
+//             )
+//           ],
+//          ),
+//
+//         ),
+//
+//
+//
 //     );
 //
-//     }
+//   }
 // }
+ return Scaffold(
+      body: Stack(
+        children: [
+          Align(alignment: const Alignment(0.0, -0.2),
+          child: Container(
+            width: 1000,
+    height: 600,
+    color: Colors.grey,
+    child:
+      Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Container(color: Colors.grey,
+              child: Text(displayForQuestion),
+          )],),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+            Container(
+              color: Colors.blue,
+              width: 100,
+              height: 100,
+              child: Column(children: [
+                Text(displayForAnswer1),
+                MaterialButton(
+                  onPressed: () async {await buttonHandler(1);},
+                  color: const Color(0xff3a21d9),
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),//
+                  child: const Text("Option A"),
+                )
+              ]
+              ),
+            ),
+            Container(
+              color: Colors.blue,
+              width: 100,
+              height: 100,
+              child: Column(children: [
+                Text(displayForAnswer1),
+                MaterialButton(
+                  onPressed: () async {await buttonHandler(2);},
+                  color: const Color(0xff3a21d9),
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),//
+                  child: const Text("Option B"),
+                )
+              ]
+              ),
+            ),
+            Container(
+              color: Colors.blue,
+              width: 100,
+              height: 100,
+              child: Column(children: [
+                Text(displayForAnswer1),
+                MaterialButton(
+                  onPressed: () async {await buttonHandler(3);},
+                  color: const Color(0xff3a21d9),
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),//
+                  child: const Text("Option C"),
+                )
+              ]
+              ),
+            ),
+          ],),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                color: Colors.purple,
+                width: 100,
+                height: 300,
+              ),
+              Container(
+                color: Colors.purple,
+                width: 100,
+                height: 300,
+              ),
+              Container(
+                color: Colors.purple,
+                width: 100,
+                height: 300,
+              ),
+            ],),
+
+
+        ],
+      ),
+    )
+    ),
+          Align(
+            alignment: const Alignment(0, -0.99),
+            child: Container(
+              width: 1000,
+              height: 50,
+              color: Colors.green,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                    Container(
+                      color: Colors.cyanAccent,
+                      child: Text("Money £$money"),
+
+                    ),
+                    Container(
+                      color: Colors.cyanAccent,
+                      child: Text("Stock: $stock"),
+                    ),
+                    Container(
+                      color: Colors.cyanAccent,
+                      child: Text("Interest: $interest"),
+                    ),
+                    Container(
+                      color: Colors.cyanAccent,
+                      child: MenuItemButton(
+                        onPressed: (){saveGame();},
+                        child: Text("Menu"),
+                      ),
+                    ),
+                  ],)
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: const Alignment(-0.9, 0.45),
+            child: Container(
+              color: Colors.red,
+              width: 20,
+              height: 400,
+              child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
+                  curve: Curves.linearToEaseOut,
+                  duration: Duration(seconds: 2),
+              child: Text("data"),),
+            ),
+          )
+        ]
+      )
+    );
+
+    }
+}
