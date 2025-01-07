@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
 import 'package:businessGameApp/displayPages/start_up_page.dart';
@@ -43,6 +45,7 @@ class GamePageState extends State<GamePage> {
   String showSaleAmount = "";
   bool saleBool = false;
   bool isVisible = true;
+  bool canPress = true;
 
 
 
@@ -83,21 +86,25 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = current.costOfOptionA;
         costOfOptionB = current.costOfOptionB;
         costOfOptionC = current.costOfOptionC;
+
       }
 
     });
   }
   void resetAnimation() {
-    saleBool = false;
-    isVisible = true;
-    showSaleAmount = "";
+    setState(() {
+      saleBool = false;
+      isVisible = true;
+      showSaleAmount = "";
+    });
+
   }
   Future<void> sales()async {
-    int sale = loadedGame.saleMaker(playersBusiness);
+    int sale = await loadedGame.saleMaker(playersBusiness);
     if (sale != 0){
-      showSaleAmount = sale.toString();
       playAudio();
       setState(() {
+        showSaleAmount = sale.toString();
         saleBool = true;
         isVisible = false;
       });
@@ -107,6 +114,20 @@ class GamePageState extends State<GamePage> {
       // make this return the amount of money made to then show on screen
     }
   }
+  void disableButton(){
+
+
+    setState(() {
+      canPress = false;
+    });
+    Timer(
+        const Duration(seconds: 2), () => setState(() {
+      canPress = true;
+    })
+    );
+
+  }
+
   Future<void> buttonHandler(int option) async{
     print(showSaleAmount);
     setState(()  {
@@ -235,7 +256,8 @@ class GamePageState extends State<GamePage> {
                               child: Column(children: [
                                 Text(displayForAnswer1),
                                 MaterialButton(
-                                  onPressed: () async {await buttonHandler(1);},
+                                  onPressed: canPress ? () async {await buttonHandler(1);
+                                  disableButton();} : null,
                                   color: const Color(0xff3a21d9),
                                   elevation: 0,
                                   shape: const RoundedRectangleBorder(
@@ -253,7 +275,8 @@ class GamePageState extends State<GamePage> {
                               child: Column(children: [
                                 Text(displayForAnswer1),
                                 MaterialButton(
-                                  onPressed: () async {await buttonHandler(2);},
+                                  onPressed:canPress ? () async {await buttonHandler(2);
+                                  disableButton();} : null,
                                   color: const Color(0xff3a21d9),
                                   elevation: 0,
                                   shape: const RoundedRectangleBorder(
@@ -271,7 +294,8 @@ class GamePageState extends State<GamePage> {
                               child: Column(children: [
                                 Text(displayForAnswer1),
                                 MaterialButton(
-                                  onPressed: () async {await buttonHandler(3);},
+                                  onPressed: canPress ? () async {await buttonHandler(3);
+                                  disableButton();} : null,
                                   color: const Color(0xff3a21d9),
                                   elevation: 0,
                                   shape: const RoundedRectangleBorder(
@@ -302,8 +326,6 @@ class GamePageState extends State<GamePage> {
                               height: 300,
                             ),
                           ],),
-
-
                       ],
                     ),
                   )
@@ -354,7 +376,7 @@ class GamePageState extends State<GamePage> {
                     child: AnimatedOpacity(opacity: isVisible ? 1.0 : 0.0, duration: const Duration(seconds: 2),
                       child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
                         curve: Curves.linearToEaseOut,
-                        duration: const Duration(seconds: 2),
+                        duration: const Duration(seconds: 3),
                         child: Text(showSaleAmount),),
                     ),
                   ))

@@ -9,7 +9,9 @@ class Play{
     FirestoreService firestoreService = FirestoreService();
 
     if (docID == ""){
-      business.setMoney(50000);
+      business.setMoney(00000);
+      business.setInterest(100);// temp
+
     }else{
 
       var save = await firestoreService.getSave(docID);
@@ -81,8 +83,6 @@ class Play{
     int chanceOfSale = saleSize.nextInt(100);
     if(chanceOfSale <= business.interest && business.stock > 0){
       business.increaseMoney(amount);
-      print(saleAmount);
-
       saleAmount = amount;
       return saleAmount;
     }
