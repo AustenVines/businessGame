@@ -10,7 +10,7 @@ Future<Box> nodeCreate() async {
   box = await Hive.openBox<Node>('basic_map');
 
 
-  String csv = "csvFile.csv"; //path to csv file asset
+  String csv = "currentCsvFile1.csv"; //path to csv file asset
   String fileData = await rootBundle.loadString(csv);
   print(fileData);
 
@@ -30,6 +30,18 @@ Future<Box> nodeCreate() async {
     int costOfOptionA = int.parse(itemInRow[8]);
     int costOfOptionB = int.parse(itemInRow[9]);
     int costOfOptionC = int.parse(itemInRow[10]);
+    int stockOfOptionA = int.parse(itemInRow[11]);
+    int stockOfOptionB = int.parse(itemInRow[12]);
+    int stockOfOptionC = int.parse(itemInRow[13]);
+    int interestOfOptionA = int.parse(itemInRow[14]);
+    int interestOfOptionB = int.parse(itemInRow[15]);
+    int interestOfOptionC = int.parse(itemInRow[16]);
+    int disasterOfOptionA = int.parse(itemInRow[17]);
+    int disasterOfOptionB = int.parse(itemInRow[18]);
+    int disasterOfOptionC = int.parse(itemInRow[19]);
+    String imageForOptionA = itemInRow[20];
+    String imageForOptionB = itemInRow[21];
+    String imageForOptionC = itemInRow[22];
     Node node = Node(
         lineID,
         optionA,
@@ -41,7 +53,19 @@ Future<Box> nodeCreate() async {
         answerC,
         costOfOptionA,
         costOfOptionB,
-        costOfOptionC);
+        costOfOptionC,
+        stockOfOptionA,
+        stockOfOptionB,
+        stockOfOptionC,
+        interestOfOptionA,
+        interestOfOptionB,
+        interestOfOptionC,
+        disasterOfOptionA,
+        disasterOfOptionB,
+        disasterOfOptionC,
+        imageForOptionA,
+        imageForOptionB,
+        imageForOptionC);
     // decisionMap.add(node);
     int key = int.parse(itemInRow[0]);
     box.put(key, node);

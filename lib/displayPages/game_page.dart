@@ -100,7 +100,7 @@ class GamePageState extends State<GamePage> {
 
   }
   Future<void> sales()async {
-    int sale = await loadedGame.saleMaker(playersBusiness);
+    int sale = loadedGame.saleMaker(playersBusiness);
     if (sale != 0){
       playAudio();
       setState(() {
@@ -129,7 +129,6 @@ class GamePageState extends State<GamePage> {
   }
 
   Future<void> buttonHandler(int option) async{
-    print(showSaleAmount);
     setState(()  {
       Node? nodeOption;
       int? amountOfMoney = 0;
@@ -138,28 +137,31 @@ class GamePageState extends State<GamePage> {
       double? amountOfDisaster = 0;
       int? newNodeId = 0;
       if (option == 1) {
-        nodeOption = box.get(optionA);
-        amountOfMoney = box.get(0)?.costOfOptionA;
-        amountOfStock = 3;
-        amountOfInterest = 3;
         newNodeId = optionA;
+        nodeOption = box.get(optionA);
+        amountOfMoney = box.get(newNodeId-1)?.costOfOptionA;
+        amountOfStock = box.get(newNodeId-1)?.stockOfOptionB;
+        amountOfInterest = box.get(newNodeId-1)?.interestOfOptionB as double?;
+
       } else if (option == 2) {
+        newNodeId = optionB;
         nodeOption = box.get(optionB);
-        amountOfMoney = box.get(0)?.costOfOptionB;
-        amountOfStock = 2;
-        amountOfInterest = 2;
-        newNodeId = optionB;
+        amountOfMoney = box.get(newNodeId-1)?.costOfOptionB;
+        amountOfStock = box.get(newNodeId-1)?.stockOfOptionB;
+        amountOfInterest = box.get(newNodeId-1)?.interestOfOptionB as double?;
+
       } else {
+        newNodeId = optionC;
         nodeOption = box.get(optionC);
-        amountOfMoney = box.get(0)?.costOfOptionC;
-        amountOfStock = 1;
-        amountOfInterest = 1;
-        newNodeId = optionB;
+        amountOfMoney = box.get(newNodeId-1)?.costOfOptionC;
+        amountOfStock = box.get(newNodeId-1)?.stockOfOptionC;
+        amountOfInterest = box.get(newNodeId-1)?.interestOfOptionC as double?;
+
       }
       loadedGame.setCurrentNode(playersBusiness, newNodeId);
       loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
-      loadedGame.editInterest(playersBusiness, amountOfInterest);
-      loadedGame.editStock(playersBusiness, amountOfStock);
+      loadedGame.editInterest(playersBusiness, amountOfInterest!);
+      loadedGame.editStock(playersBusiness, amountOfStock!);
       loadedGame.editDisaster(playersBusiness, amountOfDisaster);
 
       sales();
@@ -273,7 +275,7 @@ class GamePageState extends State<GamePage> {
                               width: 100,
                               height: 100,
                               child: Column(children: [
-                                Text(displayForAnswer1),
+                                Text(displayForAnswer2),
                                 MaterialButton(
                                   onPressed:canPress ? () async {await buttonHandler(2);
                                   disableButton();} : null,
@@ -292,7 +294,7 @@ class GamePageState extends State<GamePage> {
                               width: 100,
                               height: 100,
                               child: Column(children: [
-                                Text(displayForAnswer1),
+                                Text(displayForAnswer3),
                                 MaterialButton(
                                   onPressed: canPress ? () async {await buttonHandler(3);
                                   disableButton();} : null,
@@ -314,6 +316,12 @@ class GamePageState extends State<GamePage> {
                               color: Colors.purple,
                               width: 100,
                               height: 300,
+                              child: DecoratedBox(decoration: const BoxDecoration(
+                              image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
+                              fit: BoxFit.cover,
+                              ),
+                              ),
+                              )
                             ),
                             Container(
                               color: Colors.purple,

@@ -10,7 +10,7 @@ class Play{
 
     if (docID == ""){
       business.setMoney(00000);
-      business.setInterest(100);// temp
+      business.setInterest(0);// temp
 
     }else{
 
