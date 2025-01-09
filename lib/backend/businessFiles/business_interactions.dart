@@ -68,6 +68,7 @@ class Play{
     business.editInterest(amount);
   }
   Future<void> editStock(BusinessGame business, int amount)async {
+    print("yes");
     business.editStock(amount);
   }
   Future<void> editDisaster(BusinessGame business, double amount)async {

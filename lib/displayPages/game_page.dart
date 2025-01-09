@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
 import 'package:businessGameApp/displayPages/start_up_page.dart';
@@ -10,7 +9,7 @@ import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
 
 FirestoreService firestoreService = FirestoreService();
-BusinessGame playersBusiness = BusinessGame(0, 0, 0, 0, 0);
+BusinessGame playersBusiness = BusinessGame(0,0,0,25,0,0);
 Play loadedGame = Play();
 
 class GamePage extends StatefulWidget {
@@ -41,11 +40,17 @@ class GamePageState extends State<GamePage> {
   String interest = "";
   String stock = "";
   String disasterPercent = "";
+  String imageA = "";
+  String imageB = "";
+  String imageC = "";
   int nodeID = loadedGame.getNode(playersBusiness);
   String showSaleAmount = "";
   bool saleBool = false;
   bool isVisible = true;
   bool canPress = true;
+  bool isButtonAVisible = true;
+  bool isButtonBVisible = true;
+  bool isButtonCVisible = true;
 
 
 
@@ -54,6 +59,7 @@ class GamePageState extends State<GamePage> {
   void initState() {
     super.initState();
 
+    toggleButtonsVisibility();
     updateValues();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -64,6 +70,7 @@ class GamePageState extends State<GamePage> {
     audioPlayer.play(audioPath, isLocal: true);
   }
   void updateValues() async{
+
     await loadedGame.load(playersBusiness, selectedSave);
 
     setState(()  {
@@ -86,7 +93,6 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = current.costOfOptionA;
         costOfOptionB = current.costOfOptionB;
         costOfOptionC = current.costOfOptionC;
-
       }
 
     });
@@ -108,20 +114,17 @@ class GamePageState extends State<GamePage> {
         saleBool = true;
         isVisible = false;
       });
-
       await Future.delayed(const Duration(seconds: 2));
       resetAnimation();
       // make this return the amount of money made to then show on screen
     }
   }
   void disableButton(){
-
-
     setState(() {
       canPress = false;
     });
     Timer(
-        const Duration(seconds: 2), () => setState(() {
+        const Duration(seconds: 1), () => setState(() {
       canPress = true;
     })
     );
@@ -129,33 +132,39 @@ class GamePageState extends State<GamePage> {
   }
 
   Future<void> buttonHandler(int option) async{
+
     setState(()  {
+
       Node? nodeOption;
       int? amountOfMoney = 0;
       int? amountOfStock = 0;
       double? amountOfInterest = 0;
       double? amountOfDisaster = 0;
-      int? newNodeId = 0;
+      int? newNodeId = nodeID;
+      int offSet = 1;
+      if (nodeID == 18 || nodeID == 17){
+        offSet = 0;
+      }
       if (option == 1) {
         newNodeId = optionA;
         nodeOption = box.get(optionA);
-        amountOfMoney = box.get(newNodeId-1)?.costOfOptionA;
-        amountOfStock = box.get(newNodeId-1)?.stockOfOptionB;
-        amountOfInterest = box.get(newNodeId-1)?.interestOfOptionB as double?;
+        amountOfMoney = box.get(newNodeId-offSet)?.costOfOptionA;
+        amountOfStock = box.get(newNodeId-offSet)?.stockOfOptionA;
+        amountOfInterest = box.get(newNodeId-offSet)?.interestOfOptionA as double?;
 
       } else if (option == 2) {
         newNodeId = optionB;
         nodeOption = box.get(optionB);
-        amountOfMoney = box.get(newNodeId-1)?.costOfOptionB;
-        amountOfStock = box.get(newNodeId-1)?.stockOfOptionB;
-        amountOfInterest = box.get(newNodeId-1)?.interestOfOptionB as double?;
+        amountOfMoney = box.get(newNodeId-offSet)?.costOfOptionB;
+        amountOfStock = box.get(newNodeId-offSet)?.stockOfOptionB;
+        amountOfInterest = box.get(newNodeId-offSet)?.interestOfOptionB as double?;
 
       } else {
         newNodeId = optionC;
         nodeOption = box.get(optionC);
-        amountOfMoney = box.get(newNodeId-1)?.costOfOptionC;
-        amountOfStock = box.get(newNodeId-1)?.stockOfOptionC;
-        amountOfInterest = box.get(newNodeId-1)?.interestOfOptionC as double?;
+        amountOfMoney = box.get(newNodeId-offSet)?.costOfOptionC;
+        amountOfStock = box.get(newNodeId-offSet)?.stockOfOptionC;
+        amountOfInterest = box.get(newNodeId-offSet)?.interestOfOptionC as double?;
 
       }
       loadedGame.setCurrentNode(playersBusiness, newNodeId);
@@ -185,21 +194,32 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = nodeOption.costOfOptionA;
         costOfOptionB = nodeOption.costOfOptionB;
         costOfOptionC = nodeOption.costOfOptionC;
+        currentNode = nodeOption;
 
       }
     });
+    toggleButtonsVisibility();
   }
 
-  bool isButton1Visible = true;
-  bool isButton2Visible = true;
-  bool isButton3Visible = true;
 
-  void toggleButtonsVisibility() {// for buttons once question is asked before
+  void toggleButtonsVisibility() {
     setState(() {
-      isButton1Visible = !isButton1Visible;
-      isButton2Visible = !isButton2Visible;
-      isButton3Visible = !isButton3Visible;
+      if(currentNode!.optionB < 0){
+        isButtonBVisible = false;
+      }else{
+        isButtonBVisible = true;
+      }
+
+      if(currentNode!.optionC < 0){
+        isButtonCVisible = false;
+      }
+      else{
+        isButtonCVisible = true;
+      }
     });
+
+    print("node id = $nodeID");
+    print("options are A:${currentNode?.interestOfOptionA},B:${currentNode?.interestOfOptionB},C${currentNode?.interestOfOptionC}");
   }
 
   void saveGame(){
@@ -270,6 +290,7 @@ class GamePageState extends State<GamePage> {
                               ]
                               ),
                             ),
+                            isButtonBVisible ?
                             Container(
                               color: Colors.blue,
                               width: 100,
@@ -288,7 +309,8 @@ class GamePageState extends State<GamePage> {
                                 )
                               ]
                               ),
-                            ),
+                            ) : Container(),
+                            isButtonCVisible ?
                             Container(
                               color: Colors.blue,
                               width: 100,
@@ -307,7 +329,7 @@ class GamePageState extends State<GamePage> {
                                 )
                               ]
                               ),
-                            ),
+                            ) : Container(),
                           ],),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

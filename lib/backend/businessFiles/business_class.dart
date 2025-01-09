@@ -6,9 +6,10 @@ class BusinessGame {
   int money;
   double interest;
   int stock;
+  int stockMax;
   double disasterPercent = 0;
 
-   BusinessGame(this.currentNode, this.money, this.stock, this.interest, this.disasterPercent);
+   BusinessGame(this.currentNode, this.money, this.stock, this.stockMax, this.interest, this.disasterPercent);
 
   @override
   String toString(){
@@ -38,7 +39,13 @@ class BusinessGame {
   void setStock(int amount) {
     if (amount != 0) {
       stock = amount;
+    }else if(amount > 100){
+
     }
+
+  }
+  void setMaxStock(int amount){
+    stockMax += amount;
   }
   void setInterest(double amount) {
     if (amount != 0) {
@@ -68,7 +75,22 @@ class BusinessGame {
 
   // Edit stock with validation
   void editStock(int amount) {
-    if (amount + stock >= 0 && amount + stock <= 100) {
+    print(amount);
+    if(amount > 100){
+      switch (amount) {
+        case (130):
+          print("130");
+        case 120:
+          print("120");
+        case 110:
+          print("130");
+        case 150:
+          print("130");
+        case 160:
+          print("130");
+      }
+    }
+    if (amount + stock >= 0 && amount + stock <= stockMax) {
       stock += amount;
     } else {
       print("Stock change is out of bounds.");
