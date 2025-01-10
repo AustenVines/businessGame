@@ -64,6 +64,7 @@ class Play{
 
   int decitionMade(BusinessGame business) {
     endGame(business);
+    disasterChance(business);
     Random saleSize = Random();
     // print(saleSize.nextInt(50000));
     int amount = saleSize.nextInt(30000);

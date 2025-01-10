@@ -4,13 +4,14 @@ class FirestoreService{
 
   static final ref  = FirebaseFirestore.instance.collection('gameSaves');
   //create save onto database
-  Future<void> addSave(String name, int node, int money, int stock, double interest, double disasterPercent){
+  Future<void> addSave(String name, int node, int money, int stock, int maxStock, double interest, double disasterPercent){
     return ref.add({
       'saveName': name,
       'timestamp': Timestamp.now(),
       'currentNode': node,
       'businessMoney': money,
       'businessStock': stock,
+      'maxStock': maxStock,
       'businessInterest': interest,
       'disasterPercent': disasterPercent,
 
@@ -54,12 +55,13 @@ class FirestoreService{
       'saveName': newName,
     });
   }
-  Future<void> updateSave(String docID, node, money, stock, interest, disasterPercent) {
+  Future<void> updateSave(String docID, node, money, stock, maxStock, interest, disasterPercent) {
     return ref.doc(docID).update({
       'timestamp': Timestamp.now(),
       'currentNode': node,
       'businessMoney': money,
       'businessStock': stock,
+      'maxStock': maxStock,
       'businessInterest': interest,
       'disasterPercent': disasterPercent,
 

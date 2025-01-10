@@ -76,6 +76,11 @@ class GamePageState extends State<GamePage> {
     await loadedGame.load(playersBusiness, selectedSave);
 
     setState(()  {
+      isVisible = true;
+      canPress = true;
+      isButtonAVisible = true;
+      isButtonBVisible = true;
+      isButtonCVisible = true;
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
@@ -131,26 +136,23 @@ class GamePageState extends State<GamePage> {
       canPress = true;
     })
     );
-
   }
 
   Future<void> buttonHandler(int option) async{
-
     setState(()  {
-      // not loading the correct node details, try to print to options
       Node? nodeOption;
       int? amountOfMoney = 0;
       int? amountOfStock = 0;
       double? amountOfInterest = 0;
       double? amountOfDisaster = 0;
       int? newNodeId;
-      print(nodeID);
       if (option == 1) {
         newNodeId = optionA;
         nodeOption = box.get(optionA);
         amountOfMoney = box.get(nodeID)?.costOfOptionA;
         amountOfStock = box.get(nodeID)?.stockOfOptionA;
         amountOfInterest = box.get(nodeID)?.interestOfOptionA as double?;
+        amountOfDisaster = box.get(nodeID)?.disasterOfOptionA as double?;
 
       } else if (option == 2) {
         newNodeId = optionB;
@@ -158,6 +160,7 @@ class GamePageState extends State<GamePage> {
         amountOfMoney = box.get(nodeID)?.costOfOptionB;
         amountOfStock = box.get(nodeID)?.stockOfOptionB;
         amountOfInterest = box.get(nodeID)?.interestOfOptionB as double?;
+        amountOfDisaster = box.get(nodeID)?.disasterOfOptionB as double?;
 
       } else {
         newNodeId = optionC;
@@ -165,14 +168,14 @@ class GamePageState extends State<GamePage> {
         amountOfMoney = box.get(nodeID)?.costOfOptionC;
         amountOfStock = box.get(nodeID)?.stockOfOptionC;
         amountOfInterest = box.get(nodeID)?.interestOfOptionC as double?;
-
+        amountOfDisaster = box.get(nodeID)?.disasterOfOptionC as double?;
       }
 
       loadedGame.setCurrentNode(playersBusiness, newNodeId);
       loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
       loadedGame.editInterest(playersBusiness, amountOfInterest!);
       loadedGame.editStock(playersBusiness, amountOfStock!);
-      loadedGame.editDisaster(playersBusiness, amountOfDisaster);
+      loadedGame.editDisaster(playersBusiness, amountOfDisaster!);
 
       sales();
 
@@ -197,12 +200,9 @@ class GamePageState extends State<GamePage> {
         costOfOptionB = nodeOption.costOfOptionB;
         costOfOptionC = nodeOption.costOfOptionC;
         currentNode = nodeOption;
-
       }
     });
     toggleButtonsVisibility();
-    // print("node id = $nodeID");
-    // print("options are A:${currentNode?.interestOfOptionA},B:${currentNode?.interestOfOptionB},C${currentNode?.interestOfOptionC}");
   }
 
 
@@ -237,7 +237,7 @@ class GamePageState extends State<GamePage> {
                 actions: [
                   ElevatedButton(onPressed: () async {
                     firestoreService.addSave(textController.text, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness),
-                        loadedGame.getStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
+                        loadedGame.getStock(playersBusiness),loadedGame.getMaxStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
                     String? lastSaveId = await firestoreService.getLastSaveId();
                     textController.clear();
                     selectedSave = lastSaveId!;
@@ -247,7 +247,7 @@ class GamePageState extends State<GamePage> {
               ));
     }else{
       firestoreService.updateSave(selectedSave, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness), loadedGame.getStock(playersBusiness),
-          loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
+          loadedGame.getMaxStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
     }
   }
 
@@ -340,7 +340,7 @@ class GamePageState extends State<GamePage> {
                               color: Colors.purple,
                               width: 100,
                               height: 300,
-                              child: DecoratedBox(decoration: const BoxDecoration(
+                              child: const DecoratedBox(decoration: BoxDecoration(
                               image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
                               fit: BoxFit.cover,
                               ),

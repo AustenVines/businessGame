@@ -100,7 +100,7 @@ class BusinessGame {
 
   // Edit disaster percentage with validation
   void editDisasterPercent(double amount) {
-    if (amount + disasterPercent >= 0 && amount + disasterPercent <= 100) {
+    if (amount != 0) {
       disasterPercent += amount;
     } else {
       print("Disaster percentage change is out of bounds.");
