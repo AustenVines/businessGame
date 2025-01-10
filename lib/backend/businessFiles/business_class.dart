@@ -25,6 +25,7 @@ class BusinessGame {
   int getCurrentNode() => currentNode;
   String getSaveName() => saveName;
   String getSaveID() => saveID;
+  int getMaxStock() => stockMax;
 
 
   // Setters
@@ -75,24 +76,24 @@ class BusinessGame {
 
   // Edit stock with validation
   void editStock(int amount) {
-    print(amount);
     if(amount > 100){
       switch (amount) {
         case (130):
-          print("130");
+          stockMax += 30;
         case 120:
-          print("120");
+          stockMax += 20;
         case 110:
-          print("130");
+          stockMax += 10;
         case 150:
-          print("130");
+          stockMax += 50;
         case 160:
-          print("130");
+          stockMax += 60;
       }
-    }
-    if (amount + stock >= 0 && amount + stock <= stockMax) {
+    }else if (amount + stock >= 0 && amount + stock <= stockMax) {
       stock += amount;
-    } else {
+    } else if(amount + stock > stockMax){
+      stock = stockMax;
+    }else {
       print("Stock change is out of bounds.");
     }
   }

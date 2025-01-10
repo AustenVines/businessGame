@@ -12,8 +12,6 @@ Future<Box> nodeCreate() async {
 
   String csv = "currentCsvFile1.csv"; //path to csv file asset
   String fileData = await rootBundle.loadString(csv);
-  print(fileData);
-
 
   List <String> rows = fileData.split("\n");
   for (int i = 0; i < rows.length; i++) {

@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
@@ -39,6 +40,7 @@ class GamePageState extends State<GamePage> {
   String money = "";
   String interest = "";
   String stock = "";
+  String maxStock = "";
   String disasterPercent = "";
   String imageA = "";
   String imageB = "";
@@ -77,6 +79,7 @@ class GamePageState extends State<GamePage> {
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
+      maxStock = loadedGame.getMaxStock(playersBusiness).toString();
       disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
       nodeID = loadedGame.getNode(playersBusiness);
 
@@ -106,7 +109,7 @@ class GamePageState extends State<GamePage> {
 
   }
   Future<void> sales()async {
-    int sale = loadedGame.saleMaker(playersBusiness);
+    int sale = loadedGame.decitionMade(playersBusiness);
     if (sale != 0){
       playAudio();
       setState(() {
@@ -134,39 +137,37 @@ class GamePageState extends State<GamePage> {
   Future<void> buttonHandler(int option) async{
 
     setState(()  {
-
+      // not loading the correct node details, try to print to options
       Node? nodeOption;
       int? amountOfMoney = 0;
       int? amountOfStock = 0;
       double? amountOfInterest = 0;
       double? amountOfDisaster = 0;
-      int? newNodeId = nodeID;
-      int offSet = 1;
-      if (nodeID == 18 || nodeID == 17){
-        offSet = 0;
-      }
+      int? newNodeId;
+      print(nodeID);
       if (option == 1) {
         newNodeId = optionA;
         nodeOption = box.get(optionA);
-        amountOfMoney = box.get(newNodeId-offSet)?.costOfOptionA;
-        amountOfStock = box.get(newNodeId-offSet)?.stockOfOptionA;
-        amountOfInterest = box.get(newNodeId-offSet)?.interestOfOptionA as double?;
+        amountOfMoney = box.get(nodeID)?.costOfOptionA;
+        amountOfStock = box.get(nodeID)?.stockOfOptionA;
+        amountOfInterest = box.get(nodeID)?.interestOfOptionA as double?;
 
       } else if (option == 2) {
         newNodeId = optionB;
         nodeOption = box.get(optionB);
-        amountOfMoney = box.get(newNodeId-offSet)?.costOfOptionB;
-        amountOfStock = box.get(newNodeId-offSet)?.stockOfOptionB;
-        amountOfInterest = box.get(newNodeId-offSet)?.interestOfOptionB as double?;
+        amountOfMoney = box.get(nodeID)?.costOfOptionB;
+        amountOfStock = box.get(nodeID)?.stockOfOptionB;
+        amountOfInterest = box.get(nodeID)?.interestOfOptionB as double?;
 
       } else {
         newNodeId = optionC;
         nodeOption = box.get(optionC);
-        amountOfMoney = box.get(newNodeId-offSet)?.costOfOptionC;
-        amountOfStock = box.get(newNodeId-offSet)?.stockOfOptionC;
-        amountOfInterest = box.get(newNodeId-offSet)?.interestOfOptionC as double?;
+        amountOfMoney = box.get(nodeID)?.costOfOptionC;
+        amountOfStock = box.get(nodeID)?.stockOfOptionC;
+        amountOfInterest = box.get(nodeID)?.interestOfOptionC as double?;
 
       }
+
       loadedGame.setCurrentNode(playersBusiness, newNodeId);
       loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
       loadedGame.editInterest(playersBusiness, amountOfInterest!);
@@ -178,6 +179,7 @@ class GamePageState extends State<GamePage> {
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
+      maxStock = loadedGame.getMaxStock(playersBusiness).toString();
       disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
       nodeID = loadedGame.getNode(playersBusiness);
 
@@ -199,6 +201,8 @@ class GamePageState extends State<GamePage> {
       }
     });
     toggleButtonsVisibility();
+    // print("node id = $nodeID");
+    // print("options are A:${currentNode?.interestOfOptionA},B:${currentNode?.interestOfOptionB},C${currentNode?.interestOfOptionC}");
   }
 
 
@@ -218,8 +222,7 @@ class GamePageState extends State<GamePage> {
       }
     });
 
-    print("node id = $nodeID");
-    print("options are A:${currentNode?.interestOfOptionA},B:${currentNode?.interestOfOptionB},C${currentNode?.interestOfOptionC}");
+
   }
 
   void saveGame(){
@@ -247,7 +250,6 @@ class GamePageState extends State<GamePage> {
           loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -379,7 +381,10 @@ class GamePageState extends State<GamePage> {
                           ),
                           Container(
                             color: Colors.cyanAccent,
-                            child: Text("Stock: $stock"),
+                            child: Column(children: [
+                              Text("Stock: $stock"),
+                              Text("Maximum stock: $maxStock"),
+                            ],)
                           ),
                           Container(
                             color: Colors.cyanAccent,

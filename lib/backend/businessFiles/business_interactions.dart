@@ -30,27 +30,15 @@ class Play{
     }
 
   }
-  String getSaveID(BusinessGame business){
-    return business.getSaveID();
-  }
-  int getMoney(BusinessGame business){
-    return business.getMoney();
-  }
-  int getStock(BusinessGame business){
-    return business.getStock();
-  }
-  double getInterest(BusinessGame business){
-    return business.getInterest();
-  }
-  double getDisaster(BusinessGame business){
-    return business.getDisaster();
-  }
-  int getNode(BusinessGame business){
-    return business.getCurrentNode();
-  }
-  String getSaveName(BusinessGame business){
-    return business.getSaveName();
-  }
+  String getSaveID(BusinessGame business) => business.getSaveID();
+  int getMoney(BusinessGame business) => business.getMoney();
+  int getStock(BusinessGame business) => business.getStock();
+  double getInterest(BusinessGame business) => business.getInterest();
+  double getDisaster(BusinessGame business) => business.getDisaster();
+  int getNode(BusinessGame business) => business.getCurrentNode();
+  int getMaxStock(BusinessGame business) => business.getMaxStock();
+  String getSaveName(BusinessGame business) => business.getSaveName();
+
   void setSaveName(BusinessGame business, name){
     business.setSaveName(name);
   }
@@ -68,14 +56,13 @@ class Play{
     business.editInterest(amount);
   }
   Future<void> editStock(BusinessGame business, int amount)async {
-    print("yes");
     business.editStock(amount);
   }
   Future<void> editDisaster(BusinessGame business, double amount)async {
     business.editDisasterPercent(amount);
   }
 
-  int saleMaker(BusinessGame business) {
+  int decitionMade(BusinessGame business) {
     endGame(business);
     Random saleSize = Random();
     // print(saleSize.nextInt(50000));
@@ -91,6 +78,14 @@ class Play{
       return saleAmount;
     }
 
+  }
+
+  void disasterChance(BusinessGame business){
+    Random size = Random();
+    int disasterSize = size.nextInt(100);
+    if(business.disasterPercent > disasterSize){
+      print("disaster");
+    }
   }
 
   void endGame(BusinessGame business){
