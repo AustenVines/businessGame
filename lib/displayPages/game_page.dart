@@ -102,7 +102,6 @@ class GamePageState extends State<GamePage> {
         costOfOptionB = current.costOfOptionB;
         costOfOptionC = current.costOfOptionC;
       }
-
     });
   }
   void resetAnimation() {
@@ -111,8 +110,8 @@ class GamePageState extends State<GamePage> {
       isVisible = true;
       showSaleAmount = "";
     });
-
   }
+
   Future<void> sales()async {
     int sale = loadedGame.decitionMade(playersBusiness);
     if (sale != 0){
@@ -124,9 +123,9 @@ class GamePageState extends State<GamePage> {
       });
       await Future.delayed(const Duration(seconds: 2));
       resetAnimation();
-      // make this return the amount of money made to then show on screen
     }
   }
+
   void disableButton(){
     setState(() {
       canPress = false;
@@ -205,7 +204,6 @@ class GamePageState extends State<GamePage> {
     toggleButtonsVisibility();
   }
 
-
   void toggleButtonsVisibility() {
     setState(() {
       if(currentNode!.optionB < 0){
@@ -221,8 +219,6 @@ class GamePageState extends State<GamePage> {
         isButtonCVisible = true;
       }
     });
-
-
   }
 
   void saveGame(){
