@@ -21,12 +21,15 @@ class Play{
       double disaster = save['disasterPercent'];
       int currentNode = save['currentNode'];
       String saveName = save['saveName'];
+      int stockMax = save['maxStock'];
       business.setMoney(money);
       business.setStock(stock);
       business.setInterest(interest);
       business.setDisaster(disaster);
       business.setNode(currentNode);
       business.setSaveName(saveName);
+      business.setMaxStock(stockMax);
+
     }
 
   }

@@ -60,8 +60,6 @@ class GamePageState extends State<GamePage> {
 
   void initState() {
     super.initState();
-
-    toggleButtonsVisibility();
     updateValues();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -78,9 +76,6 @@ class GamePageState extends State<GamePage> {
     setState(()  {
       isVisible = true;
       canPress = true;
-      isButtonAVisible = true;
-      isButtonBVisible = true;
-      isButtonCVisible = true;
       money = loadedGame.getMoney(playersBusiness).toString();
       interest = loadedGame.getInterest(playersBusiness).toString();
       stock = loadedGame.getStock(playersBusiness).toString();
@@ -103,6 +98,7 @@ class GamePageState extends State<GamePage> {
         costOfOptionC = current.costOfOptionC;
       }
     });
+    toggleButtonsVisibility();
   }
   void resetAnimation() {
     setState(() {
@@ -206,16 +202,22 @@ class GamePageState extends State<GamePage> {
 
   void toggleButtonsVisibility() {
     setState(() {
-      if(currentNode!.optionB < 0){
+      int aVisible = box.get(nodeID)!.optionA;
+      int bVisible = box.get(nodeID)!.optionB;
+      int cVisible = box.get(nodeID)!.optionC;
+      if(aVisible < 0){
+        isButtonAVisible = false;
+      }else{
+        isButtonAVisible = true;
+      }
+      if(bVisible < 0){
         isButtonBVisible = false;
       }else{
         isButtonBVisible = true;
       }
-
-      if(currentNode!.optionC < 0){
+      if (cVisible < 0){
         isButtonCVisible = false;
-      }
-      else{
+      }else{
         isButtonCVisible = true;
       }
     });
