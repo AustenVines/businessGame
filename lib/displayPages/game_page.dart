@@ -195,7 +195,7 @@ class GamePageState extends State<GamePage> {
         amountOfInterest = box.get(nodeID)?.interestOfOptionC as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionC as double?;
         if (box.get(nodeID)!.answerC.toLowerCase().contains("stolen")){
-          if (playersBusiness.chanceToBeCaught() <= 100){
+          if (playersBusiness.chanceToBeCaught() <= 50){
             nodeOption = box.get(17);
             newNodeId = 17;
           }
