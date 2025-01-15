@@ -117,7 +117,6 @@ class BusinessGame {
     } else if(amount + stock > stockMax){
       stock = stockMax;
     }else {
-      print("Stock change is out of bounds.");
     }
   }
 

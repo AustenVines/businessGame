@@ -32,9 +32,9 @@ class GamePageState extends State<GamePage> {
   String displayForAnswer1 = "";
   String displayForAnswer2 = "";
   String displayForAnswer3 = "";
-  late int? costOfOptionA = currentNode?.costOfOptionA;
-  late int? costOfOptionB = currentNode?.costOfOptionB;
-  late int? costOfOptionC = currentNode?.costOfOptionC;
+  int? costOfOptionA;
+  int? costOfOptionB;
+  int? costOfOptionC;
   String money = "";
   String interest = "";
   String stock = "";
@@ -51,6 +51,16 @@ class GamePageState extends State<GamePage> {
   bool isButtonAVisible = true;
   bool isButtonBVisible = true;
   bool isButtonCVisible = true;
+  String changeInMoneyA = "";
+  String changeInMoneyB = "";
+  String changeInMoneyC = "";
+  String changeInStockA = "";
+  String changeInStockB = "";
+  String changeInStockC = "";
+  String changeInInterestA = "";
+  String changeInInterestB = "";
+  String changeInInterestC = "";
+
 
   @override
 
@@ -133,6 +143,12 @@ class GamePageState extends State<GamePage> {
 
   void resetValues(){
     playersBusiness.reset();
+    money = playersBusiness.getMoney().toString();
+    interest = playersBusiness.getInterest().toString();
+    stock = playersBusiness.getStock().toString();
+    maxStock = playersBusiness.getMaxStock().toString();
+    disasterPercent = playersBusiness.getDisaster().toString();
+
   }
 
   Future<void> buttonHandler(int option) async{
@@ -420,7 +436,7 @@ class GamePageState extends State<GamePage> {
                             color: Colors.cyanAccent,
                             child: MenuItemButton(
                               onPressed: (){saveGame();},
-                              child: Text("Menu"),
+                              child: const Text("Menu"),
                             ),
                           ),
                         ],)
