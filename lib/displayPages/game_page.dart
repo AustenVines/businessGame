@@ -345,7 +345,7 @@ class GamePageState extends State<GamePage> {
                             Container(
                               color: Colors.blue,
                               width: width/4,
-                              height: height/3,
+                              height: height/5,
                               child: Column(children: [
                                 Text(displayForAnswer1),
                                 MaterialButton(
@@ -368,7 +368,7 @@ class GamePageState extends State<GamePage> {
                             Container(
                               color: Colors.blue,
                               width: width/4,
-                              height: height/3,
+                              height: height/5,
                               child: Column(children: [
                                 Text(displayForAnswer2),
                                 MaterialButton(
@@ -391,7 +391,7 @@ class GamePageState extends State<GamePage> {
                             Container(
                               color: Colors.blue,
                               width: width/4,
-                              height: height/3,
+                              height: height/5,
                               child: Column(children: [
                                 Text(displayForAnswer3),
                                 MaterialButton(
@@ -483,10 +483,17 @@ class GamePageState extends State<GamePage> {
                           ),
                           Container(
                             color: Colors.cyanAccent,
-                            child: MenuItemButton(
-                              onPressed: (){saveGame();},
+                            child: PopupMenuButton(
                               child: const Text("Menu"),
-                            ),
+                              itemBuilder: (BuildContext context) => [
+                                PopupMenuItem(child: TextButton(onPressed: (){saveGame();}, child: const Text("Save Game"))),
+                                PopupMenuItem(child: TextButton(onPressed: (){
+                                  Navigator.push(context,
+                                  MaterialPageRoute(builder: (context1) => const StartupPage()),
+                                );}, child: const Text("Quit game"))),
+                                PopupMenuItem(child: TextButton(onPressed: (){print("settings");}, child: const Text("Settings")))
+                              ],
+                            )
                           ),
                         ],)
                     ],
@@ -497,7 +504,7 @@ class GamePageState extends State<GamePage> {
                   alignment: const Alignment(-0.9, 0.45),
                   child: Container(
                     // color: Colors.grey,
-                    width: width/30,
+                    width: width/20,
                     height: height/2,
                     child: AnimatedOpacity(opacity: isVisible ? 1.0 : 0.0, duration: const Duration(seconds: 2),
                       child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
