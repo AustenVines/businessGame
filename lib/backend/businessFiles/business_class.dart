@@ -1,4 +1,8 @@
 
+import 'dart:math';
+
+import '../../services/firestore.dart';
+
 class BusinessGame {
   String saveID = "";
   String saveName = "";
@@ -21,6 +25,34 @@ class BusinessGame {
   String getSaveID() => saveID;
   int getMaxStock() => stockMax;
 
+  Future<void> load(String docID) async{
+    FirestoreService firestoreService = FirestoreService();
+
+    if (docID == ""){
+      setMoney(00000);
+      setInterest(0);// temp
+
+    }else{
+
+      var save = await firestoreService.getSave(docID);
+      int money = save['businessMoney'];
+      int stock = save['businessStock'];
+      double interest = save['businessInterest'];
+      double disaster = save['disasterPercent'];
+      int currentNode = save['currentNode'];
+      String saveName = save['saveName'];
+      int stockMax = save['maxStock'];
+      setMoney(money);
+      setStock(stock);
+      setInterest(interest);
+      setDisaster(disaster);
+      setNode(currentNode);
+      setSaveName(saveName);
+      setMaxStock(stockMax);
+
+    }
+
+  }
 
   // Setters
   void setSaveID(String newSaveID){
@@ -39,7 +71,7 @@ class BusinessGame {
 
   }
   void setMaxStock(int amount){
-    stockMax += amount;
+    stockMax = amount;
   }
   void setInterest(double amount) {
     if (amount != 0) {
@@ -102,5 +134,52 @@ class BusinessGame {
   }
   void increaseMoney(int amount){
     money += amount;
+  }
+
+  void reset(){
+    money = 0;
+    stockMax = 0;
+    stock  = 0;
+    interest = 0;
+    disasterPercent = 0;
+  }
+
+  int decisionMade() {
+    Random saleSize = Random();
+    // print(saleSize.nextInt(50000));
+    int amount = saleSize.nextInt(30000);
+    int saleAmount = 0;
+    int chanceOfSale = saleSize.nextInt(100);
+    if(chanceOfSale <= interest && stock > 0){
+      increaseMoney(amount);
+      saleAmount = amount;
+      return saleAmount;
+    }
+    else{
+      return saleAmount;
+    }
+  }
+
+  void disasterChance(){
+    Random size = Random();
+    int disasterSize = size.nextInt(100);
+    if(disasterPercent > disasterSize){
+      // print("disaster");
+    }
+  }
+
+  bool endGame(){
+    if(money < 0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  int chanceToBeCaught(){
+    Random number = Random();
+    int chance = number.nextInt(100);
+    return chance;
   }
 }

@@ -1,7 +1,6 @@
 
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:businessGameApp/backend/businessFiles/business_interactions.dart';
 import 'package:businessGameApp/displayPages/start_up_page.dart';
 import 'package:businessGameApp/services/firestore.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import '../backend/nodeFiles/node.dart';
 
 FirestoreService firestoreService = FirestoreService();
 BusinessGame playersBusiness = BusinessGame(0,0,0,25,0,0);
-Play loadedGame = Play();
 
 class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -45,7 +43,7 @@ class GamePageState extends State<GamePage> {
   String imageA = "";
   String imageB = "";
   String imageC = "";
-  int nodeID = loadedGame.getNode(playersBusiness);
+  int nodeID = playersBusiness.getCurrentNode();
   String showSaleAmount = "";
   bool saleBool = false;
   bool isVisible = true;
@@ -69,17 +67,17 @@ class GamePageState extends State<GamePage> {
   }
   void updateValues() async{
 
-    await loadedGame.load(playersBusiness, selectedSave);
+    await playersBusiness.load(selectedSave);
 
     setState(()  {
       isVisible = true;
       canPress = true;
-      money = loadedGame.getMoney(playersBusiness).toString();
-      interest = loadedGame.getInterest(playersBusiness).toString();
-      stock = loadedGame.getStock(playersBusiness).toString();
-      maxStock = loadedGame.getMaxStock(playersBusiness).toString();
-      disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
-      nodeID = loadedGame.getNode(playersBusiness);
+      money = playersBusiness.getMoney().toString();
+      interest = playersBusiness.getInterest().toString();
+      stock = playersBusiness.getStock().toString();
+      maxStock = playersBusiness.getMaxStock().toString();
+      disasterPercent = playersBusiness.getDisaster().toString();
+      nodeID = playersBusiness.getCurrentNode();
 
       Node? current = box.get(nodeID);
       if(current != null) {
@@ -108,7 +106,7 @@ class GamePageState extends State<GamePage> {
   }
 
   Future<void> sales()async {
-    int sale = loadedGame.decisionMade(playersBusiness);
+    int sale = playersBusiness.decisionMade();
     if (sale != 0){
       playAudio();
       setState(() {
@@ -119,6 +117,7 @@ class GamePageState extends State<GamePage> {
       await Future.delayed(const Duration(seconds: 2));
       resetAnimation();
     }
+    playersBusiness.disasterChance();
   }
 
   void disableButton(){
@@ -130,6 +129,10 @@ class GamePageState extends State<GamePage> {
       canPress = true;
     })
     );
+  }
+
+  void resetValues(){
+    playersBusiness.reset();
   }
 
   Future<void> buttonHandler(int option) async{
@@ -148,7 +151,7 @@ class GamePageState extends State<GamePage> {
         amountOfInterest = box.get(nodeID)?.interestOfOptionA as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionA as double?;
         if (box.get(nodeID)!.answerA.toLowerCase().contains("stolen")){
-          if (loadedGame.chanceToBeCaught() <= 50){
+          if (playersBusiness.chanceToBeCaught() <= 50){
             nodeOption = box.get(17);
             nodeID = 17;
           }
@@ -162,7 +165,7 @@ class GamePageState extends State<GamePage> {
         amountOfInterest = box.get(nodeID)?.interestOfOptionB as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionB as double?;
         if (box.get(nodeID)!.answerB.toLowerCase().contains("stolen")){
-          if (loadedGame.chanceToBeCaught() <= 50){
+          if (playersBusiness.chanceToBeCaught() <= 50){
             nodeOption = box.get(17);
             nodeID = 17;
           }
@@ -176,27 +179,34 @@ class GamePageState extends State<GamePage> {
         amountOfInterest = box.get(nodeID)?.interestOfOptionC as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionC as double?;
         if (box.get(nodeID)!.answerC.toLowerCase().contains("stolen")){
-          if (loadedGame.chanceToBeCaught() <= 100){
+          if (playersBusiness.chanceToBeCaught() <= 100){
             nodeOption = box.get(17);
             newNodeId = 17;
           }
         }
       }
 
-      loadedGame.setCurrentNode(playersBusiness, newNodeId);
-      loadedGame.decreaseMoney(playersBusiness, amountOfMoney!);
-      loadedGame.editInterest(playersBusiness, amountOfInterest!);
-      loadedGame.editStock(playersBusiness, amountOfStock!);
-      loadedGame.editDisaster(playersBusiness, amountOfDisaster!);
+      playersBusiness.setNode(newNodeId);
+      playersBusiness.decreaseMoney(amountOfMoney!);
+      playersBusiness.editInterest(amountOfInterest!);
+      playersBusiness.editStock(amountOfStock!);
+      playersBusiness.editDisasterPercent(amountOfDisaster!);
 
       sales();
 
-      money = loadedGame.getMoney(playersBusiness).toString();
-      interest = loadedGame.getInterest(playersBusiness).toString();
-      stock = loadedGame.getStock(playersBusiness).toString();
-      maxStock = loadedGame.getMaxStock(playersBusiness).toString();
-      disasterPercent = loadedGame.getDisaster(playersBusiness).toString();
-      nodeID = loadedGame.getNode(playersBusiness);
+      money = playersBusiness.getMoney().toString();
+      interest = playersBusiness.getInterest().toString();
+      stock = playersBusiness.getStock().toString();
+      maxStock = playersBusiness.getMaxStock().toString();
+      disasterPercent = playersBusiness.getDisaster().toString();
+      nodeID = playersBusiness.getCurrentNode();
+
+      if (playersBusiness.endGame() == true){
+        nodeOption = box.get(18);
+        newNodeId = 18;
+        nodeID = 18;
+        resetValues();
+      }
 
 
       if (nodeOption != null) {
@@ -214,7 +224,6 @@ class GamePageState extends State<GamePage> {
         currentNode = nodeOption;
       }
     });
-    print(nodeID);
     toggleButtonsVisibility();
   }
 
@@ -253,8 +262,8 @@ class GamePageState extends State<GamePage> {
                 ),
                 actions: [
                   ElevatedButton(onPressed: () async {
-                    firestoreService.addSave(textController.text, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness),
-                        loadedGame.getStock(playersBusiness),loadedGame.getMaxStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
+                    firestoreService.addSave(textController.text, playersBusiness.getCurrentNode(), playersBusiness.getMoney(),
+                        playersBusiness.getStock(),playersBusiness.getMaxStock(), playersBusiness.getInterest(), playersBusiness.getDisaster());
                     String? lastSaveId = await firestoreService.getLastSaveId();
                     textController.clear();
                     selectedSave = lastSaveId!;
@@ -263,8 +272,8 @@ class GamePageState extends State<GamePage> {
                 ],
               ));
     }else{
-      firestoreService.updateSave(selectedSave, loadedGame.getNode(playersBusiness), loadedGame.getMoney(playersBusiness), loadedGame.getStock(playersBusiness),
-          loadedGame.getMaxStock(playersBusiness), loadedGame.getInterest(playersBusiness), loadedGame.getDisaster(playersBusiness));
+      firestoreService.updateSave(selectedSave, playersBusiness.getCurrentNode(), playersBusiness.getMoney(), playersBusiness.getStock(),
+          playersBusiness.getMaxStock(), playersBusiness.getInterest(), playersBusiness.getDisaster());
     }
   }
 
