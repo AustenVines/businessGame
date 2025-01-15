@@ -46,9 +46,8 @@ class Play{
     business.setSaveName(name);
   }
   Future<void> setCurrentNode(BusinessGame business, int node)async {
-    business.currentNode = node;
+    business.setNode(node);
   }
-
   Future<void> decreaseMoney(BusinessGame business, int amount)async {
     business.decreaseMoney(amount);
   }
@@ -65,7 +64,13 @@ class Play{
     business.editDisasterPercent(amount);
   }
 
-  int decitionMade(BusinessGame business) {
+  int chanceToBeCaught(){
+    Random number = Random();
+    int chance = number.nextInt(100);
+    return chance;
+  }
+
+  int decisionMade(BusinessGame business) {
     endGame(business);
     disasterChance(business);
     Random saleSize = Random();
@@ -88,13 +93,13 @@ class Play{
     Random size = Random();
     int disasterSize = size.nextInt(100);
     if(business.disasterPercent > disasterSize){
-      print("disaster");
+      // print("disaster");
     }
   }
 
   void endGame(BusinessGame business){
     if(business.money <= 0){
-      // print("end game");
+      //print("end game");
     }
     else{
     }

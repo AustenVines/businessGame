@@ -54,8 +54,6 @@ class GamePageState extends State<GamePage> {
   bool isButtonBVisible = true;
   bool isButtonCVisible = true;
 
-
-
   @override
 
   void initState() {
@@ -98,6 +96,7 @@ class GamePageState extends State<GamePage> {
         costOfOptionC = current.costOfOptionC;
       }
     });
+
     toggleButtonsVisibility();
   }
   void resetAnimation() {
@@ -109,7 +108,7 @@ class GamePageState extends State<GamePage> {
   }
 
   Future<void> sales()async {
-    int sale = loadedGame.decitionMade(playersBusiness);
+    int sale = loadedGame.decisionMade(playersBusiness);
     if (sale != 0){
       playAudio();
       setState(() {
@@ -148,6 +147,12 @@ class GamePageState extends State<GamePage> {
         amountOfStock = box.get(nodeID)?.stockOfOptionA;
         amountOfInterest = box.get(nodeID)?.interestOfOptionA as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionA as double?;
+        if (box.get(nodeID)!.answerA.toLowerCase().contains("stolen")){
+          if (loadedGame.chanceToBeCaught() <= 50){
+            nodeOption = box.get(17);
+            nodeID = 17;
+          }
+        }
 
       } else if (option == 2) {
         newNodeId = optionB;
@@ -156,6 +161,12 @@ class GamePageState extends State<GamePage> {
         amountOfStock = box.get(nodeID)?.stockOfOptionB;
         amountOfInterest = box.get(nodeID)?.interestOfOptionB as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionB as double?;
+        if (box.get(nodeID)!.answerB.toLowerCase().contains("stolen")){
+          if (loadedGame.chanceToBeCaught() <= 50){
+            nodeOption = box.get(17);
+            nodeID = 17;
+          }
+        }
 
       } else {
         newNodeId = optionC;
@@ -164,6 +175,12 @@ class GamePageState extends State<GamePage> {
         amountOfStock = box.get(nodeID)?.stockOfOptionC;
         amountOfInterest = box.get(nodeID)?.interestOfOptionC as double?;
         amountOfDisaster = box.get(nodeID)?.disasterOfOptionC as double?;
+        if (box.get(nodeID)!.answerC.toLowerCase().contains("stolen")){
+          if (loadedGame.chanceToBeCaught() <= 100){
+            nodeOption = box.get(17);
+            newNodeId = 17;
+          }
+        }
       }
 
       loadedGame.setCurrentNode(playersBusiness, newNodeId);
@@ -197,10 +214,12 @@ class GamePageState extends State<GamePage> {
         currentNode = nodeOption;
       }
     });
+    print(nodeID);
     toggleButtonsVisibility();
   }
 
   void toggleButtonsVisibility() {
+
     setState(() {
       int aVisible = box.get(nodeID)!.optionA;
       int bVisible = box.get(nodeID)!.optionB;

@@ -11,12 +11,6 @@ class BusinessGame {
 
    BusinessGame(this.currentNode, this.money, this.stock, this.stockMax, this.interest, this.disasterPercent);
 
-  @override
-  String toString(){
-    String business = "current node: $currentNode and money: $money";
-    return business;
-  }
-
   // Getters
   int getMoney() => money;
   double getInterest() => interest;
@@ -41,7 +35,6 @@ class BusinessGame {
     if (amount != 0) {
       stock = amount;
     }else if(amount > 100){
-
     }
 
   }
@@ -69,8 +62,6 @@ class BusinessGame {
   void editInterest(double amount) {
     if (amount + interest >= 0 && amount + interest <= 100) {
       interest += amount;
-    } else {
-      print("Interest change is out of bounds.");
     }
   }
 
