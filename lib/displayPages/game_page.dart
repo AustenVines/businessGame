@@ -333,11 +333,16 @@ class GamePageState extends State<GamePage> {
                     child:
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Container(color: Colors.grey,
-                            child: Text(displayForQuestion),
+                          children: [Container(color: Colors.purple,
+                            width: width,
+                            height: height/6,
+                            child: Align(alignment: const Alignment(0, 1),
+                            child: Text(displayForQuestion),)
+
                           )],),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
