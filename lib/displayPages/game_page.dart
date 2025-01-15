@@ -102,6 +102,20 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = current.costOfOptionA;
         costOfOptionB = current.costOfOptionB;
         costOfOptionC = current.costOfOptionC;
+        changeInMoneyA = "£-${current.costOfOptionA}";
+        changeInMoneyB = "£-${current.costOfOptionB}";
+        changeInMoneyC = "£-${current.costOfOptionC}";
+        changeInStockA = "+${current.stockOfOptionA} stock";
+        changeInStockB = "+${current.stockOfOptionB} stock";
+        changeInStockC = "+${current.stockOfOptionC} stock";
+        changeInInterestA = "+${current.interestOfOptionA} interest";
+        changeInInterestB = "+${current.interestOfOptionB} interest";
+        changeInInterestC = "+${current.interestOfOptionC} interest";
+        imageA = current.imageForOptionA;
+        imageB = current.imageForOptionB;
+        int imageCLength = current.imageForOptionC.length;
+        imageC = current.imageForOptionC.substring(0,imageCLength -1);
+
       }
     });
 
@@ -224,7 +238,6 @@ class GamePageState extends State<GamePage> {
         resetValues();
       }
 
-
       if (nodeOption != null) {
         iD = nodeOption.iD;
         optionA = nodeOption.optionA;
@@ -237,7 +250,19 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = nodeOption.costOfOptionA;
         costOfOptionB = nodeOption.costOfOptionB;
         costOfOptionC = nodeOption.costOfOptionC;
-        currentNode = nodeOption;
+        changeInMoneyA = "£-${nodeOption.costOfOptionA}";
+        changeInMoneyB = "£-${nodeOption.costOfOptionB}";
+        changeInMoneyC = "£-${nodeOption.costOfOptionC}";
+        changeInStockA = "+${nodeOption.stockOfOptionA} stock";
+        changeInStockB = "+${nodeOption.stockOfOptionB} stock";
+        changeInStockC = "+${nodeOption.stockOfOptionC} stock";
+        changeInInterestA = "+${nodeOption.interestOfOptionA} interest";
+        changeInInterestB = "+${nodeOption.interestOfOptionB} interest";
+        changeInInterestC = "+${nodeOption.interestOfOptionC} interest";
+        imageA = nodeOption.imageForOptionA;
+        imageB = nodeOption.imageForOptionB;
+        int imageCLength = nodeOption.imageForOptionC.length;
+        imageC = nodeOption.imageForOptionC.substring(0,imageCLength -1);
       }
     });
     toggleButtonsVisibility();
@@ -295,13 +320,15 @@ class GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.sizeOf(context).height;
+    double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
         body: Stack(
             children: [
               Align(alignment: const Alignment(0.0, -0.2),
                   child: Container(
-                    width: 1000,
-                    height: 600,
+                    width: width,
+                    height: height,
                     color: Colors.grey,
                     child:
                     Column(
@@ -317,8 +344,8 @@ class GamePageState extends State<GamePage> {
                           children: [
                             Container(
                               color: Colors.blue,
-                              width: 100,
-                              height: 100,
+                              width: width/4,
+                              height: height/3,
                               child: Column(children: [
                                 Text(displayForAnswer1),
                                 MaterialButton(
@@ -330,15 +357,18 @@ class GamePageState extends State<GamePage> {
                                     borderRadius: BorderRadius.zero,
                                   ),//
                                   child: const Text("Option A"),
-                                )
+                                ),
+                                Text(changeInMoneyA),
+                                Text(changeInStockA),
+                                Text(changeInInterestA)
                               ]
                               ),
                             ),
                             isButtonBVisible ?
                             Container(
                               color: Colors.blue,
-                              width: 100,
-                              height: 100,
+                              width: width/4,
+                              height: height/3,
                               child: Column(children: [
                                 Text(displayForAnswer2),
                                 MaterialButton(
@@ -350,15 +380,18 @@ class GamePageState extends State<GamePage> {
                                     borderRadius: BorderRadius.zero,
                                   ),//
                                   child: const Text("Option B"),
-                                )
+                                ),
+                                Text(changeInMoneyB),
+                                Text(changeInStockB),
+                                Text(changeInInterestB)
                               ]
                               ),
                             ) : Container(),
                             isButtonCVisible ?
                             Container(
                               color: Colors.blue,
-                              width: 100,
-                              height: 100,
+                              width: width/4,
+                              height: height/3,
                               child: Column(children: [
                                 Text(displayForAnswer3),
                                 MaterialButton(
@@ -370,7 +403,10 @@ class GamePageState extends State<GamePage> {
                                     borderRadius: BorderRadius.zero,
                                   ),//
                                   child: const Text("Option C"),
-                                )
+                                ),
+                                Text(changeInMoneyC),
+                                Text(changeInStockC),
+                                Text(changeInInterestC)
                               ]
                               ),
                             ) : Container(),
@@ -380,10 +416,11 @@ class GamePageState extends State<GamePage> {
                           children: [
                             Container(
                               color: Colors.purple,
-                              width: 100,
-                              height: 300,
-                              child: const DecoratedBox(decoration: BoxDecoration(
-                              image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
+                              width: width/4,
+                              height: width/4,
+
+                              child:DecoratedBox(decoration: BoxDecoration(
+                              image: DecorationImage(image: AssetImage(imageA),
                               fit: BoxFit.cover,
                               ),
                               ),
@@ -391,13 +428,25 @@ class GamePageState extends State<GamePage> {
                             ),
                             Container(
                               color: Colors.purple,
-                              width: 100,
-                              height: 300,
+                                width: width/4,
+                                height: width/4,
+                                child:DecoratedBox(decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage(imageB),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                )
                             ),
                             Container(
                               color: Colors.purple,
-                              width: 100,
-                              height: 300,
+                                width: width/4,
+                                height: width/4,
+                                child:DecoratedBox(decoration: BoxDecoration(
+                                  image: DecorationImage(image: AssetImage(imageC),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                )
                             ),
                           ],),
                       ],
@@ -407,8 +456,8 @@ class GamePageState extends State<GamePage> {
               Align(
                 alignment: const Alignment(0, -0.99),
                 child: Container(
-                  width: 1000,
-                  height: 50,
+                  width: width,
+                  height: height/10,
                   color: Colors.green,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -447,9 +496,9 @@ class GamePageState extends State<GamePage> {
               Align(
                   alignment: const Alignment(-0.9, 0.45),
                   child: Container(
-                    color: Colors.red,
-                    width: 60,
-                    height: 400,
+                    // color: Colors.grey,
+                    width: width/30,
+                    height: height/2,
                     child: AnimatedOpacity(opacity: isVisible ? 1.0 : 0.0, duration: const Duration(seconds: 2),
                       child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
                         curve: Curves.linearToEaseOut,
