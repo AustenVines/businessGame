@@ -73,6 +73,44 @@ flutter:
   assets:
     - assets/currentCsvFile1.csv
     - assets/images/background.jpeg
+    - assets/images/easy.jpeg
+    - assets/images/medium.jpeg
+    - assets/images/hard.jpeg
+    - assets/images/appeal.jpeg
+    - assets/images/bestStore.jpeg
+    - assets/images/bigStore.jpeg
+    - assets/images/billboard.jpeg
+    - assets/images/bucket.jpeg
+    - assets/images/cutTree.jpeg
+    - assets/images/damagedRoof.jpeg
+    - assets/images/delivery.jpeg
+    - assets/images/fix.jpeg
+    - assets/images/goodStore.jpeg
+    - assets/images/lock.jpeg
+    - assets/images/mediumStore.jpeg
+    - assets/images/newRoof.jpeg
+    - assets/images/newStore.jpeg
+    - assets/images/noMoney.jpeg
+    - assets/images/nothing.jpeg
+    - assets/images/outskirts.jpeg
+    - assets/images/paint.jpeg
+    - assets/images/police.jpeg
+    - assets/images/posters.jpeg
+    - assets/images/prevent.jpeg
+    - assets/images/secCamera.jpeg
+    - assets/images/secTeam.jpeg
+    - assets/images/security.jpeg
+    - assets/images/smallStore.jpeg
+    - assets/images/stock.jpeg
+    - assets/images/stolen.jpeg
+    - assets/images/town.jpeg
+    - assets/images/tree.jpeg
+    - assets/images/village.jpeg
+    - assets/images/warehouse.jpeg
+    - assets/images/warehouseOne.jpeg
+    - assets/images/win.jpeg
+    - assets/images/wordOfMouth.jpeg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
