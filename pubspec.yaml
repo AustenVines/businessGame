@@ -33,7 +33,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   intl: ^0.18.0
-  audioplayers: ^6.1.0
+  audioplayers: ^0.20.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -113,6 +113,7 @@ flutter:
     - assets/images/lots.jpeg
     - assets/images/some.jpeg
     - assets/images/smallAmount.jpeg
+    - assets/images/niceWarehouse.jpeg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

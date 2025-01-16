@@ -73,7 +73,7 @@ class GamePageState extends State<GamePage> {
   }
   void playAudio(){
     String localSound = "assets/sounds/sale.mp3";
-    audioPlayer.play(localSound as Source);
+    audioPlayer.play(localSound, isLocal: true);
   }
   void updateValues() async{
 
