@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
+import '../backend/settings.dart';
 
 FirestoreService firestoreService = FirestoreService();
 BusinessGame playersBusiness = BusinessGame(0,0,0,25,0,0);
@@ -164,7 +165,7 @@ class GamePageState extends State<GamePage> {
     if (sale != 0){
       playAudio(0);
       setState(() {
-        showSaleAmount = sale.toString();
+        showSaleAmount = "£${sale.toString()}";
         saleBool = true;
         isVisible = false;
       });
@@ -374,7 +375,7 @@ class GamePageState extends State<GamePage> {
                     textController.clear();
                     selectedSave = lastSaveId!;
                     Navigator.pop(context);
-                  }, child: const Text("Save"))
+                  }, child: const Text("Save", style: TextStyle(fontSize: 15)))
                 ],
               ));
     }else{
@@ -387,6 +388,7 @@ class GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
+    double textSize = height/40;
     return Scaffold(
         body: Stack(
             children: [
@@ -402,11 +404,13 @@ class GamePageState extends State<GamePage> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Container(color: Colors.purple,
+                          children: [
+                            Container(
+                                // color: Colors.purple,
                             width: width,
                             height: height/6,
                             child: Align(alignment: const Alignment(0, 1),
-                            child: Text(displayForQuestion),)
+                            child: Text(displayForQuestion , style: TextStyle(fontSize: textSize)),)
 
                           )],),
                         Row(
@@ -417,7 +421,7 @@ class GamePageState extends State<GamePage> {
                               width: width/4,
                               height: height/5,
                               child: Column(children: [
-                                Text(displayForAnswer1),
+                                Text(displayForAnswer1, style: TextStyle(fontSize: textSize)),
                                 MaterialButton(
                                   onPressed: canPress ? () async {await buttonHandler(1);
                                   disableButton();} : null,
@@ -426,11 +430,11 @@ class GamePageState extends State<GamePage> {
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.zero,
                                   ),//
-                                  child: const Text("Option A"),
+                                  child: Text("Option A", style: TextStyle(fontSize: textSize)),
                                 ),
-                                Text(changeInMoneyA),
-                                Text(changeInStockA),
-                                Text(changeInInterestA)
+                                Text(changeInMoneyA, style: TextStyle(fontSize: textSize)),
+                                Text(changeInStockA, style: TextStyle(fontSize: textSize)),
+                                Text(changeInInterestA, style: TextStyle(fontSize: textSize))
                               ]
                               ),
                             ),
@@ -440,7 +444,7 @@ class GamePageState extends State<GamePage> {
                               width: width/4,
                               height: height/5,
                               child: Column(children: [
-                                Text(displayForAnswer2),
+                                Text(displayForAnswer2, style: TextStyle(fontSize: textSize)),
                                 MaterialButton(
                                   onPressed:canPress ? () async {await buttonHandler(2);
                                   disableButton();} : null,
@@ -449,11 +453,11 @@ class GamePageState extends State<GamePage> {
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.zero,
                                   ),//
-                                  child: const Text("Option B"),
+                                  child: Text("Option B", style: TextStyle(fontSize: textSize)),
                                 ),
-                                Text(changeInMoneyB),
-                                Text(changeInStockB),
-                                Text(changeInInterestB)
+                                Text(changeInMoneyB, style: TextStyle(fontSize: textSize)),
+                                Text(changeInStockB, style: TextStyle(fontSize: textSize)),
+                                Text(changeInInterestB, style: TextStyle(fontSize: textSize))
                               ]
                               ),
                             ) : Container(),
@@ -463,7 +467,7 @@ class GamePageState extends State<GamePage> {
                               width: width/4,
                               height: height/5,
                               child: Column(children: [
-                                Text(displayForAnswer3),
+                                Text(displayForAnswer3, style: TextStyle(fontSize: textSize)),
                                 MaterialButton(
                                   onPressed: canPress ? () async {await buttonHandler(3);
                                   disableButton();} : null,
@@ -472,11 +476,11 @@ class GamePageState extends State<GamePage> {
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.zero,
                                   ),//
-                                  child: const Text("Option C"),
+                                  child: Text("Option C", style: TextStyle(fontSize: textSize)),
                                 ),
-                                Text(changeInMoneyC),
-                                Text(changeInStockC),
-                                Text(changeInInterestC)
+                                Text(changeInMoneyC, style: TextStyle(fontSize: textSize)),
+                                Text(changeInStockC, style: TextStyle(fontSize: textSize)),
+                                Text(changeInInterestC, style: TextStyle(fontSize: textSize))
                               ]
                               ),
                             ) : Container(),
@@ -530,7 +534,7 @@ class GamePageState extends State<GamePage> {
                 child: Container(
                   width: width,
                   height: height/10,
-                  color: Colors.green,
+                  // color: Colors.green,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -538,32 +542,33 @@ class GamePageState extends State<GamePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Container(
-                            color: Colors.cyanAccent,
-                            child: Text("Money £$money"),
+                            // color: Colors.cyanAccent,
+                            child: Text("Money £$money", style: TextStyle(fontSize: textSize)),
 
                           ),
                           Container(
-                            color: Colors.cyanAccent,
+                            // color: Colors.cyanAccent,
                             child: Column(children: [
                               Text("Stock: $stock"),
-                              Text("Maximum stock: $maxStock"),
+                              Text("Maximum stock: $maxStock", style: TextStyle(fontSize: textSize)),
                             ],)
                           ),
                           Container(
-                            color: Colors.cyanAccent,
-                            child: Text("Interest: $interest"),
+                            // color: Colors.cyanAccent,
+                            child: Text("Interest: $interest", style: TextStyle(fontSize: textSize)),
                           ),
                           Container(
-                            color: Colors.cyanAccent,
+                            // color: Colors.cyanAccent,
                             child: PopupMenuButton(
-                              child: const Text("Menu"),
+                              child: Text("Menu", style: TextStyle(fontSize: textSize)),
+
+
                               itemBuilder: (BuildContext context) => [
-                                PopupMenuItem(child: TextButton(onPressed: (){saveGame();}, child: const Text("Save Game"))),
+                                PopupMenuItem(child: TextButton(onPressed: (){saveGame();}, child: Text("Save Game", style: TextStyle(fontSize: textSize)))),
                                 PopupMenuItem(child: TextButton(onPressed: (){
                                   Navigator.push(context,
-                                  MaterialPageRoute(builder: (context1) => const StartupPage()),
-                                );}, child: const Text("Quit game"))),
-                                PopupMenuItem(child: TextButton(onPressed: (){print("settings");}, child: const Text("Settings")))
+                                  MaterialPageRoute(builder: (context) => const StartupPage()),
+                                );}, child: Text("Quit game", style: TextStyle(fontSize: textSize)))),
                               ],
                             )
                           ),
@@ -582,7 +587,7 @@ class GamePageState extends State<GamePage> {
                       child: AnimatedAlign(alignment: saleBool ? Alignment.topCenter : Alignment.bottomCenter,
                         curve: Curves.linearToEaseOut,
                         duration: const Duration(seconds: 3),
-                        child: Text(showSaleAmount),),
+                        child: Text(showSaleAmount, style: TextStyle(fontSize: textSize)),),
                     ),
                   ))
             ]

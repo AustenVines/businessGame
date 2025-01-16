@@ -127,7 +127,6 @@ class BusinessGame {
     if (amount != 0) {
       disasterPercent += amount;
     } else {
-      print("Disaster percentage change is out of bounds.");
     }
   }
   void decreaseMoney(int amount){
