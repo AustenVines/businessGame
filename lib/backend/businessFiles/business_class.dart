@@ -119,7 +119,9 @@ class BusinessGame {
     }else {
     }
   }
-
+  void decreaseStock(int amount){
+    stock -= amount;
+  }
   // Edit disaster percentage with validation
   void editDisasterPercent(double amount) {
     if (amount != 0) {
@@ -151,6 +153,7 @@ class BusinessGame {
     int chanceOfSale = saleSize.nextInt(100);
     if(chanceOfSale <= interest && stock > 0){
       increaseMoney(amount);
+      decreaseStock(1);
       saleAmount = amount;
       return saleAmount;
     }
@@ -166,7 +169,14 @@ class BusinessGame {
       // print("disaster");
     }
   }
-
+  bool winGame(){
+    if (money >= 1000000){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
   bool endGame(){
     if(money < 0){
       return true;

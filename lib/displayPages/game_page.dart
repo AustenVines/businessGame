@@ -71,9 +71,15 @@ class GamePageState extends State<GamePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
     });
   }
-  void playAudio(){
+  void playAudio(int number){
     String localSound = "assets/sounds/sale.mp3";
-    audioPlayer.play(localSound, isLocal: true);
+    String localSound1 = "assets/sounds/button.mp3";
+    if(number == 0){
+      audioPlayer.play(localSound, isLocal: true);
+    }else if(number == 1){
+      audioPlayer.play(localSound1, isLocal: true);
+    }
+
   }
   void updateValues() async{
 
@@ -104,16 +110,34 @@ class GamePageState extends State<GamePage> {
         costOfOptionC = current.costOfOptionC;
         if(current.costOfOptionA < 0){
           changeInMoneyA = "£+${0-current.costOfOptionA}";
-          changeInMoneyB = "£+${0-current.costOfOptionB}";
-          changeInMoneyC = "£+${0-current.costOfOptionC}";
         }else{
           changeInMoneyA = "£-${current.costOfOptionA}";
-          changeInMoneyB = "£-${current.costOfOptionB}";
+        }
+        if(current.costOfOptionB < 0){
+          changeInMoneyB = "£+${0-current.costOfOptionB}";
+        }else{
           changeInMoneyC = "£-${current.costOfOptionC}";
         }
-        changeInStockA = "+${current.stockOfOptionA} stock";
-        changeInStockB = "+${current.stockOfOptionB} stock";
-        changeInStockC = "+${current.stockOfOptionC} stock";
+        if(current.costOfOptionC < 0){
+          changeInMoneyC = "£+${0-current.costOfOptionC}";
+        }else{
+          changeInMoneyC = "£-${current.costOfOptionC}";
+        }
+        if(current.stockOfOptionA > 100){
+          changeInStockA = "+${current.stockOfOptionA - 100} Stock capacity";
+        }else{
+          changeInStockA = "+${current.stockOfOptionA} stock";
+        }
+        if(current.stockOfOptionB > 100){
+          changeInStockB = "+${current.stockOfOptionB - 100} Stock capacity";
+        }else{
+          changeInStockB = "+${current.stockOfOptionB} stock";
+        }
+        if(current.stockOfOptionC > 100){
+          changeInStockC = "+${current.stockOfOptionC - 100} Stock capacity";
+        }else{
+          changeInStockC = "+${current.stockOfOptionC} stock";
+        }
         changeInInterestA = "+${current.interestOfOptionA} interest";
         changeInInterestB = "+${current.interestOfOptionB} interest";
         changeInInterestC = "+${current.interestOfOptionC} interest";
@@ -138,7 +162,7 @@ class GamePageState extends State<GamePage> {
   Future<void> sales()async {
     int sale = playersBusiness.decisionMade();
     if (sale != 0){
-      playAudio();
+      playAudio(0);
       setState(() {
         showSaleAmount = sale.toString();
         saleBool = true;
@@ -172,6 +196,7 @@ class GamePageState extends State<GamePage> {
   }
 
   Future<void> buttonHandler(int option) async{
+    playAudio(1);
     setState(()  {
       Node? nodeOption;
       int? amountOfMoney = 0;
@@ -204,6 +229,7 @@ class GamePageState extends State<GamePage> {
           if (playersBusiness.chanceToBeCaught() <= 50){
             nodeOption = box.get(17);
             nodeID = 17;
+            resetValues();
           }
         }
 
@@ -218,6 +244,7 @@ class GamePageState extends State<GamePage> {
           if (playersBusiness.chanceToBeCaught() <= 50){
             nodeOption = box.get(17);
             newNodeId = 17;
+            resetValues();
           }
         }
       }
@@ -237,6 +264,12 @@ class GamePageState extends State<GamePage> {
       disasterPercent = playersBusiness.getDisaster().toString();
       nodeID = playersBusiness.getCurrentNode();
 
+      if(playersBusiness.winGame() == true){
+        nodeOption = box.get(20);
+        newNodeId = 20;
+        nodeID = 20;
+        resetValues();
+      }
       if (playersBusiness.endGame() == true){
         nodeOption = box.get(18);
         newNodeId = 18;
@@ -259,17 +292,35 @@ class GamePageState extends State<GamePage> {
 
         if(nodeOption.costOfOptionA < 0){
           changeInMoneyA = "£+${0-nodeOption.costOfOptionA}";
-          changeInMoneyB = "£+${0-nodeOption.costOfOptionB}";
-          changeInMoneyC = "£+${0-nodeOption.costOfOptionC}";
         }else{
           changeInMoneyA = "£-${nodeOption.costOfOptionA}";
-          changeInMoneyB = "£-${nodeOption.costOfOptionB}";
+        }
+        if(nodeOption.costOfOptionB < 0){
+          changeInMoneyB = "£+${0-nodeOption.costOfOptionB}";
+        }else{
           changeInMoneyC = "£-${nodeOption.costOfOptionC}";
         }
+        if(nodeOption.costOfOptionC < 0){
+          changeInMoneyC = "£+${0-nodeOption.costOfOptionC}";
+        }else{
+          changeInMoneyC = "£-${nodeOption.costOfOptionC}";
+        }
+        if(nodeOption.stockOfOptionA > 100){
+          changeInStockA = "+${nodeOption.stockOfOptionA - 100} Stock capacity";
+        }else{
+          changeInStockA = "+${nodeOption.stockOfOptionA} stock";
+        }
+        if(nodeOption.stockOfOptionB > 100){
+          changeInStockB = "+${nodeOption.stockOfOptionB - 100} Stock capacity";
+        }else{
+          changeInStockB = "+${nodeOption.stockOfOptionB} stock";
+        }
+        if(nodeOption.stockOfOptionC > 100){
+          changeInStockC = "+${nodeOption.stockOfOptionC - 100} Stock capacity";
+        }else{
+          changeInStockC = "+${nodeOption.stockOfOptionC} stock";
+        }
 
-        changeInStockA = "+${nodeOption.stockOfOptionA} stock";
-        changeInStockB = "+${nodeOption.stockOfOptionB} stock";
-        changeInStockC = "+${nodeOption.stockOfOptionC} stock";
         changeInInterestA = "+${nodeOption.interestOfOptionA} interest";
         changeInInterestB = "+${nodeOption.interestOfOptionB} interest";
         changeInInterestC = "+${nodeOption.interestOfOptionC} interest";
@@ -445,6 +496,7 @@ class GamePageState extends State<GamePage> {
                               ),
                               )
                             ),
+                            isButtonBVisible ?
                             Container(
                               color: Colors.purple,
                                 width: width/4,
@@ -455,7 +507,8 @@ class GamePageState extends State<GamePage> {
                                   ),
                                 ),
                                 )
-                            ),
+                            ) : Container(),
+                            isButtonCVisible ?
                             Container(
                               color: Colors.purple,
                                 width: width/4,
@@ -466,7 +519,7 @@ class GamePageState extends State<GamePage> {
                                   ),
                                 ),
                                 )
-                            ),
+                            ) : Container(),
                           ],),
                       ],
                     ),
@@ -538,138 +591,3 @@ class GamePageState extends State<GamePage> {
 
   }
 }
-
-
-
-//     return Scaffold(
-//         body:
-//          DecoratedBox(decoration: const BoxDecoration(
-//           image: DecorationImage(image: AssetImage("assets/images/background.jpeg"),
-//             fit: BoxFit.cover,
-//           ),
-//         ),child: Column(
-//           children: [
-//             Row(
-//
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: [
-//
-//                 Text(displayForQuestion)
-//               ],),Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [Column(
-//                   children: [
-//                     Text("Money: £${loadedGame.getMoney(playersBusiness).toString()}"),
-//                     Text("interest percentage: $interest%"),
-//                     Text("Stock level: $stock"),
-//                     Text("disaster percentage: $disasterPercent%"),
-//                     Text("optionDisplay1"),
-//
-//                     Text(displayForAnswer1),
-//                     isButton1Visible ?
-//                     MaterialButton(
-//                       onPressed: () async {await buttonHandler(1);},//
-//                       color: const Color(0xff3a21d9),
-//                       elevation: 0,
-//                       shape: const RoundedRectangleBorder(
-//                         borderRadius: BorderRadius.zero,
-//                       ),
-//                       textColor: const Color(0xfffffdfd),
-//                       height: 40,
-//                       minWidth: 140,
-//                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                       child: const Text(
-//                         "option 1",
-//                         style: TextStyle(
-//                           fontSize: 14,
-//                           fontWeight: FontWeight.w400,
-//                           fontStyle: FontStyle.normal,
-//                         ),
-//                       ),
-//                     )
-//                         : Container(),
-//                   ],
-//                 ),
-//                   Column(
-//                     children: [
-//                       Text("optionDisplay2"),
-//                       Text(displayForAnswer2),
-//                       isButton2Visible ?
-//                       MaterialButton(
-//                         onPressed: () async {await buttonHandler(2);}, // buttonHandler(2);
-//                         color: const Color(0xff3a21d9),
-//                         elevation: 0,
-//                         shape: const RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.zero,
-//                         ),
-//                         textColor: const Color(0xfffffdfd),
-//                         height: 40,
-//                         minWidth: 140,
-//                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                         child: const Text(
-//                           "option 2",
-//                           style: TextStyle(
-//                             fontSize: 14,
-//                             fontWeight: FontWeight.w400,
-//                             fontStyle: FontStyle.normal,
-//                           ),
-//                         ),
-//                       )
-//                           : Container(),
-//                     ],
-//
-//                   ),
-//                   Column(
-//                     children: [
-//                       TextButton(onPressed: () {
-//                         saveGame();
-//                       }, child: const Text("Save Game")),
-//                       Text("optionDisplay3"),
-//                       Text(displayForAnswer3),
-//                       isButton3Visible ?
-//                       MaterialButton(
-//                         onPressed: () async {await buttonHandler(3);}, // buttonHandler(3);
-//                         color: const Color(0xff3a21d9),
-//                         elevation: 0,
-//                         shape: const RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.zero,
-//                         ),
-//                         textColor: const Color(0xfffffdfd),
-//                         height: 40,
-//                         minWidth: 140,
-//                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//                         child: const Text(
-//                           "option 3",
-//                           style: TextStyle(
-//                             fontSize: 14,
-//                             fontWeight: FontWeight.w400,
-//                             fontStyle: FontStyle.normal,
-//                           ),
-//                         ),
-//                       )
-//                           : Container(),
-//                     ],
-//                   ),
-//
-//                 ]
-//             ),
-//             Container(
-//               height: 25,
-//               width: 10,
-//               alignment: Alignment.bottomLeft,
-//               padding: const EdgeInsets.all(40.0),
-//               color: Colors.black,
-//             )
-//           ],
-//          ),
-//
-//         ),
-//
-//
-//
-//     );
-//
-//   }
-// }
-
