@@ -110,6 +110,9 @@ flutter:
     - assets/images/warehouseOne.jpeg
     - assets/images/win.jpeg
     - assets/images/wordOfMouth.jpeg
+    - assets/images/lots.jpeg
+    - assets/images/some.jpeg
+    - assets/images/smallAmount.jpeg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
