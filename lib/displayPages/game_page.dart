@@ -102,9 +102,15 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = current.costOfOptionA;
         costOfOptionB = current.costOfOptionB;
         costOfOptionC = current.costOfOptionC;
-        changeInMoneyA = "£-${current.costOfOptionA}";
-        changeInMoneyB = "£-${current.costOfOptionB}";
-        changeInMoneyC = "£-${current.costOfOptionC}";
+        if(current.costOfOptionA < 0){
+          changeInMoneyA = "£+${0-current.costOfOptionA}";
+          changeInMoneyB = "£+${0-current.costOfOptionB}";
+          changeInMoneyC = "£+${0-current.costOfOptionC}";
+        }else{
+          changeInMoneyA = "£-${current.costOfOptionA}";
+          changeInMoneyB = "£-${current.costOfOptionB}";
+          changeInMoneyC = "£-${current.costOfOptionC}";
+        }
         changeInStockA = "+${current.stockOfOptionA} stock";
         changeInStockB = "+${current.stockOfOptionB} stock";
         changeInStockC = "+${current.stockOfOptionC} stock";
@@ -250,9 +256,17 @@ class GamePageState extends State<GamePage> {
         costOfOptionA = nodeOption.costOfOptionA;
         costOfOptionB = nodeOption.costOfOptionB;
         costOfOptionC = nodeOption.costOfOptionC;
-        changeInMoneyA = "£-${nodeOption.costOfOptionA}";
-        changeInMoneyB = "£-${nodeOption.costOfOptionB}";
-        changeInMoneyC = "£-${nodeOption.costOfOptionC}";
+
+        if(nodeOption.costOfOptionA < 0){
+          changeInMoneyA = "£+${0-nodeOption.costOfOptionA}";
+          changeInMoneyB = "£+${0-nodeOption.costOfOptionB}";
+          changeInMoneyC = "£+${0-nodeOption.costOfOptionC}";
+        }else{
+          changeInMoneyA = "£-${nodeOption.costOfOptionA}";
+          changeInMoneyB = "£-${nodeOption.costOfOptionB}";
+          changeInMoneyC = "£-${nodeOption.costOfOptionC}";
+        }
+
         changeInStockA = "+${nodeOption.stockOfOptionA} stock";
         changeInStockB = "+${nodeOption.stockOfOptionB} stock";
         changeInStockC = "+${nodeOption.stockOfOptionC} stock";
