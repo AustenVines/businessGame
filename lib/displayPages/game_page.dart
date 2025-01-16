@@ -72,8 +72,8 @@ class GamePageState extends State<GamePage> {
     });
   }
   void playAudio(){
-    String audioPath = "assets/sounds/sale.mp3";
-    audioPlayer.play(audioPath, isLocal: true);
+    String localSound = "assets/sounds/sale.mp3";
+    audioPlayer.play(localSound as Source);
   }
   void updateValues() async{
 
