@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../backend/businessFiles/business_class.dart';
 import '../backend/csv_ripper.dart';
 import '../backend/nodeFiles/node.dart';
-import '../backend/settings.dart';
 
 FirestoreService firestoreService = FirestoreService();
 BusinessGame playersBusiness = BusinessGame(0,0,0,25,0,0);
@@ -386,17 +385,26 @@ class GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
     double textSize = height/40;
     return Scaffold(
         body: Stack(
             children: [
+              Container(
+                width: width,
+                height: height,
+                child: const DecoratedBox(decoration: BoxDecoration(
+        image: DecorationImage(opacity: 0.2,
+          image: AssetImage("assets/images/background.jpeg"),
+      fit: BoxFit.cover,
+    ),
+    )),),
               Align(alignment: const Alignment(0.0, -0.2),
                   child: Container(
                     width: width,
                     height: height,
-                    color: Colors.grey,
                     child:
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

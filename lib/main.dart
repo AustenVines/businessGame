@@ -9,6 +9,7 @@ Future<void> main()  async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   await nodeCreate();
   runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: StartupPage(),
   ));
 }

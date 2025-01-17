@@ -88,144 +88,160 @@ class StartupPageState extends State<StartupPage> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.sizeOf(context).height;
+    double width = MediaQuery.sizeOf(context).width;
+    double textSize = height/40;
     return Scaffold(
       backgroundColor: Colors.grey,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [Text("Zero to Millions")],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  selectedSave = "";
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const GamePage()),
-                  );
-                },
-                child: const Text("New Game"),
-              ),
-              TextButton(
-                onPressed: () {
-                  if (selectedSave != "") {
+      body: Stack(children: [
+        Container(
+          width: width,
+          height: height,
+          child: const DecoratedBox(decoration: BoxDecoration(
+            image: DecorationImage(opacity: 0.2,
+              image: AssetImage("assets/images/background.jpeg"),
+              fit: BoxFit.cover,
+            ),
+          )),),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [Text("Zero to Millions")],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    selectedSave = "";
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const GamePage()),
                     );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("No save selected")),
-                    );
-                  }
-                },
-                child: Text("Continue with $displaySelectedSave"),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 200,
-                width: 200,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: firestoreService.getSavesStream(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                  },
+                  child: const Text("New Game"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (selectedSave != "") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const GamePage()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("No save selected", style: TextStyle(fontSize: textSize))),
                       );
                     }
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Error loading saves"),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      List<DocumentSnapshot> savesList = snapshot.data!.docs;
+                  },
+                  child: Text("Continue with $displaySelectedSave", style: TextStyle(fontSize: textSize)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 200,
+                  width: 200,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: firestoreService.getSavesStream(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Error loading saves", style: TextStyle(fontSize: textSize)),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        List<DocumentSnapshot> savesList = snapshot.data!.docs;
 
-                      if (savesList.isEmpty) {
+                        if (savesList.isEmpty) {
+                          return Center(
+                            child: Text("No saves", style: TextStyle(fontSize: textSize)),
+                          );
+                        }
+
+                        return ListView.builder(
+                          itemCount: savesList.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot document = savesList[index];
+                            String docID = document.id;
+
+                            try {
+                              Map<String, dynamic> data =
+                              document.data() as Map<String, dynamic>;
+                              String saveName = data['saveName'];
+
+                              return ListTile(
+                                title: Text(saveName),
+                                subtitle: Text(
+                                  "Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",
+                                ),
+                                onTap: () {
+                                  grabSave(docID);
+                                  holdSave(docID);
+                                },
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => editSave(docID),
+                                      icon: const Icon(Icons.settings),
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        try {
+                                          selectedSave = "";
+                                          await firestoreService.deleteSave(docID);
+                                        } catch (e) {
+                                          print("Error deleting save: $e");
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content: Text(
+                                                    "Failed to delete save")),
+                                          );
+                                        }
+                                      },
+                                      icon: const Icon(Icons.delete),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } catch (e) {
+                              print("Error processing document: $e");
+                              return const ListTile(
+                                title: Text("Error loading save"),
+                              );
+                            }
+                          },
+                        );
+                      } else {
                         return const Center(
                           child: Text("No saves"),
                         );
                       }
-
-                      return ListView.builder(
-                        itemCount: savesList.length,
-                        itemBuilder: (context, index) {
-                          DocumentSnapshot document = savesList[index];
-                          String docID = document.id;
-
-                          try {
-                            Map<String, dynamic> data =
-                            document.data() as Map<String, dynamic>;
-                            String saveName = data['saveName'];
-
-                            return ListTile(
-                              title: Text(saveName),
-                              subtitle: Text(
-                                "Saved on: ${DateFormat('yyyy-MM-dd HH:mm').format((data['timestamp'] as Timestamp).toDate())}",
-                              ),
-                              onTap: () {
-                                grabSave(docID);
-                                holdSave(docID);
-                              },
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editSave(docID),
-                                    icon: const Icon(Icons.settings),
-                                  ),
-                                  IconButton(
-                                    onPressed: () async {
-                                      try {
-                                        selectedSave = "";
-                                        await firestoreService.deleteSave(docID);
-                                      } catch (e) {
-                                        print("Error deleting save: $e");
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Failed to delete save")),
-                                        );
-                                      }
-                                    },
-                                    icon: const Icon(Icons.delete),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } catch (e) {
-                            print("Error processing document: $e");
-                            return const ListTile(
-                              title: Text("Error loading save"),
-                            );
-                          }
-                        },
-                      );
-                    } else {
-                      return const Center(
-                        child: Text("No saves"),
-                      );
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          ],
+        ),
+      ],)
     );
   }
 }
+
