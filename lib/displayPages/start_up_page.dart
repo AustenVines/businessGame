@@ -111,13 +111,14 @@ class StartupPageState extends State<StartupPage> {
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [Text("Zero to Millions")],
+              children: [Text("Zero to Millions", style: TextStyle(fontSize: 100),)],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextButton(
+                  style: TextButton.styleFrom(backgroundColor: Colors.lightBlue),
                   onPressed: () {
                     selectedSave = "";
                     Navigator.push(
@@ -125,9 +126,10 @@ class StartupPageState extends State<StartupPage> {
                       MaterialPageRoute(builder: (context) => const GamePage()),
                     );
                   },
-                  child: const Text("New Game"),
+                  child: Text("New Game"),
                 ),
                 TextButton(
+                  style: TextButton.styleFrom(backgroundColor: Colors.lightBlue),
                   onPressed: () {
                     if (selectedSave != "") {
                       Navigator.push(

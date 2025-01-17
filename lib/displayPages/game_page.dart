@@ -105,9 +105,6 @@ class GamePageState extends State<GamePage> {
         displayForAnswer1 = current.answerA;
         displayForAnswer2 = current.answerB;
         displayForAnswer3 = current.answerC;
-        costOfOptionA = current.costOfOptionA;
-        costOfOptionB = current.costOfOptionB;
-        costOfOptionC = current.costOfOptionC;
         if(current.costOfOptionA < 0){
           changeInMoneyA = "£+${0-current.costOfOptionA}";
         }else{
@@ -116,7 +113,7 @@ class GamePageState extends State<GamePage> {
         if(current.costOfOptionB < 0){
           changeInMoneyB = "£+${0-current.costOfOptionB}";
         }else{
-          changeInMoneyC = "£-${current.costOfOptionC}";
+          changeInMoneyB = "£-${current.costOfOptionB}";
         }
         if(current.costOfOptionC < 0){
           changeInMoneyC = "£+${0-current.costOfOptionC}";
@@ -286,10 +283,6 @@ class GamePageState extends State<GamePage> {
         displayForAnswer1 = nodeOption.answerA;
         displayForAnswer2 = nodeOption.answerB;
         displayForAnswer3 = nodeOption.answerC;
-        costOfOptionA = nodeOption.costOfOptionA;
-        costOfOptionB = nodeOption.costOfOptionB;
-        costOfOptionC = nodeOption.costOfOptionC;
-
         if(nodeOption.costOfOptionA < 0){
           changeInMoneyA = "£+${0-nodeOption.costOfOptionA}";
         }else{
@@ -298,7 +291,7 @@ class GamePageState extends State<GamePage> {
         if(nodeOption.costOfOptionB < 0){
           changeInMoneyB = "£+${0-nodeOption.costOfOptionB}";
         }else{
-          changeInMoneyC = "£-${nodeOption.costOfOptionC}";
+          changeInMoneyB = "£-${nodeOption.costOfOptionB}";
         }
         if(nodeOption.costOfOptionC < 0){
           changeInMoneyC = "£+${0-nodeOption.costOfOptionC}";
@@ -426,8 +419,8 @@ class GamePageState extends State<GamePage> {
                           children: [
                             Container(
                               color: Colors.blue,
-                              width: width/4,
-                              height: height/5,
+                              width: width/3.5,
+                              height: height/4,
                               child: Column(children: [
                                 Text(displayForAnswer1, style: TextStyle(fontSize: textSize)),
                                 MaterialButton(
@@ -449,8 +442,8 @@ class GamePageState extends State<GamePage> {
                             isButtonBVisible ?
                             Container(
                               color: Colors.blue,
-                              width: width/4,
-                              height: height/5,
+                              width: width/3.5,
+                              height: height/4,
                               child: Column(children: [
                                 Text(displayForAnswer2, style: TextStyle(fontSize: textSize)),
                                 MaterialButton(
@@ -472,8 +465,8 @@ class GamePageState extends State<GamePage> {
                             isButtonCVisible ?
                             Container(
                               color: Colors.blue,
-                              width: width/4,
-                              height: height/5,
+                              width: width/3.5,
+                              height: height/4,
                               child: Column(children: [
                                 Text(displayForAnswer3, style: TextStyle(fontSize: textSize)),
                                 MaterialButton(
@@ -498,9 +491,8 @@ class GamePageState extends State<GamePage> {
                           children: [
                             Container(
                               color: Colors.purple,
-                              width: width/4,
-                              height: width/4,
-
+                                width: width/5,
+                                height: width/5,
                               child:DecoratedBox(decoration: BoxDecoration(
                               image: DecorationImage(image: AssetImage(imageA),
                               fit: BoxFit.cover,
@@ -511,8 +503,8 @@ class GamePageState extends State<GamePage> {
                             isButtonBVisible ?
                             Container(
                               color: Colors.purple,
-                                width: width/4,
-                                height: width/4,
+                                width: width/5,
+                                height: width/5,
                                 child:DecoratedBox(decoration: BoxDecoration(
                                   image: DecorationImage(image: AssetImage(imageB),
                                     fit: BoxFit.cover,
@@ -523,8 +515,8 @@ class GamePageState extends State<GamePage> {
                             isButtonCVisible ?
                             Container(
                               color: Colors.purple,
-                                width: width/4,
-                                height: width/4,
+                                width: width/5,
+                                height: width/5,
                                 child:DecoratedBox(decoration: BoxDecoration(
                                   image: DecorationImage(image: AssetImage(imageC),
                                     fit: BoxFit.cover,
