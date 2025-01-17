@@ -2,6 +2,17 @@ dart sdk set up
 Flutter sdk set up
 Chrome(web) is the platform I have used.
 
+My code is in all with in the lib folder and then subfolders from there. All images and sounds are in the assets folder and then a subfolder from there.
+In the backend folder you will find the node class and the node.g file which enables me to use the local database (hive).
+I also have the comma-separated values(csv) ripper in the backend which takes each row of the CSV file called currentCsvFile1 and puts them into a node. 
+Within the backend I have the business class and all methods within the file too. This business class holds the values I use/manipulate during the game.
+
+In the display pages are the start-up page which is the first page the user sees. This page gets information from the cloud database (firebase/firestore).
+In the game page file, this is what the user sees when they choose to play the game. This page has access to both the hive database and the firestore database. 
+
+In the services folder I have the firebase options and the firestore class and methods. Both the game page and the start-up page use this file to communicate with the database to perform CRUD tasks.
+In the main file it loads the start-up page and initiates the creation of the nodes plus the cloud database communications.
+
 dependencies:
 flutter:
 sdk: flutter
