@@ -31,16 +31,16 @@ class StartupPageState extends State<StartupPage> {
       var save = await firestoreService.getSave(docID) as DocumentSnapshot;
       setState(() {
         if (displaySelectedSave == save['saveName']) {
-          displaySelectedSave = "Previous save (click save you want to load)";
+          displaySelectedSave = "previous save (click save you want to load)";
         } else {
           displaySelectedSave = save['saveName'];
         }
       });
     } catch (e) {
       // Handle exception and log the error
-      print("Error fetching save: $e");
+      print("Error getting save: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Failed to fetch save")),
+        const SnackBar(content: Text("Failed to get save")),
       );
     }
   }

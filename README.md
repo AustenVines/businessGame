@@ -22,4 +22,7 @@ build_runner: ^2.0.5
 
 flutter_lints: ^4.0.0
 
-This is a business game which asks the users questions with 3 possible answers that the user can choose from. There are business values that change after each decision made and they influence the sales made for the business.
+This is a business game which asks the users questions with 3 possible answers that the user can choose from.
+There are business values that change after each decision made and they influence the sales made for the business.
+
+I made a map for the which helped me plan questions and have a path. The map I have added in a download within the folder.
